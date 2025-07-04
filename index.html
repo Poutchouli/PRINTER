@@ -59,6 +59,7 @@
         .form-group {
             display: flex;
             flex-direction: column;
+            position: relative;
         }
         label {
             font-weight: bold;
@@ -98,7 +99,7 @@
         .import-label {
             display: inline-block;
         }
-        #import-file {
+        #import-file, #import-templates {
             display: none;
         }
         .dynamic-list-item {
@@ -131,6 +132,31 @@
         .add-btn:hover {
             background-color: #27ae60;
         }
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            border-bottom: none;
+            border-top: none;
+            z-index: 99;
+            top: 100%;
+            left: 0;
+            right: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #fff;
+        }
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #d4d4d4;
+        }
+        .autocomplete-items div:hover {
+            background-color: #e9e9e9;
+        }
+        .autocomplete-active {
+            background-color: #007bff !important;
+            color: #ffffff;
+        }
     </style>
 </head>
 <body>
@@ -143,13 +169,22 @@
 
         <h1 data-lang="title">🖨️ Printer Leasing Contract Tool</h1>
 
+        <fieldset>
+            <legend data-lang="templates">Contract Templates</legend>
+            <div class="button-group" style="margin-top: 0;">
+                <input type="file" id="import-templates" accept=".csv">
+                <label for="import-templates" class="import-label" data-lang="importTemplatesBtn">📂 Import Templates (CSV)</label>
+                <button type="button" id="download-template" data-lang="downloadTemplateBtn">📥 Download Template</button>
+            </div>
+        </fieldset>
+
         <div id="contract-form">
             <fieldset>
                 <legend data-lang="generalInfo">General Information</legend>
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="contract-name" data-lang="contractName">Contract Name</label>
-                        <input id="contract-name" type="text" data-lang-placeholder="contractNamePlaceholder">
+                        <input id="contract-name" type="text" data-lang-placeholder="contractNamePlaceholder" autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label for="provider" data-lang="provider">Provider</label>
@@ -158,6 +193,42 @@
                     <div class="form-group">
                         <label for="duration" data-lang="duration">Contract Duration (Months)</label>
                         <input id="duration" type="number" data-lang-placeholder="durationPlaceholder">
+                    </div>
+                </div>
+            </fieldset>
+            
+            <fieldset>
+                <legend data-lang="printerInfo">Printer Information</legend>
+                 <div class="form-grid">
+                    <div class="form-group">
+                        <label for="manufacturer" data-lang="manufacturer">Manufacturer</label>
+                        <input id="manufacturer" type="text" data-lang-placeholder="manufacturerPlaceholder" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="model" data-lang="model">Model</label>
+                        <input id="model" type="text" data-lang-placeholder="modelPlaceholder" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-grid" style="margin-top: 20px;">
+                    <div class="form-group">
+                        <label for="maintenance" data-lang="maintenance">Maintenance</label>
+                        <input id="maintenance" type="number" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="reliability" data-lang="reliability">Reliability</label>
+                        <input id="reliability" type="number" min="0" max="100">
+                    </div>
+                     <div class="form-group">
+                        <label for="support" data-lang="support">Support</label>
+                        <input id="support" type="number" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="easeOfUse" data-lang="easeOfUse">Ease of Use</label>
+                        <input id="easeOfUse" type="number" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="repairability" data-lang="repairability">Repairability</label>
+                        <input id="repairability" type="number" min="0" max="100">
                     </div>
                 </div>
             </fieldset>
@@ -225,10 +296,53 @@
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         let currentLanguage = 'en';
+        let customTemplates = [];
+
+        const printerInfoData = {
+            "Canon": {
+                models: ["imageRUNNER ADVANCE DX C3800 Series", "imageRUNNER ADVANCE DX 6800 Series", "i-SENSYS X Series"],
+                characteristics: { maintenance: 85, reliability: 90, support: 88, easeOfUse: 87, repairability: 80 }
+            },
+            "Toshiba": {
+                models: ["e-STUDIO 7527AC", "e-STUDIO 6529A", "e-STUDIO 509CS"],
+                characteristics: { maintenance: 85, reliability: 88, support: 80, easeOfUse: 87, repairability: 80 }
+            },
+            "Ricoh": {
+                models: ["IM C Series", "IM Series"],
+                characteristics: { maintenance: 82, reliability: 88, support: 80, easeOfUse: 89, repairability: 78 }
+            },
+            "Konica Minolta": {
+                models: ["bizhub i-Series"],
+                characteristics: { maintenance: 80, reliability: 90, support: 82, easeOfUse: 85, repairability: 75 }
+            },
+            "Koesio (Kyocera)": {
+                models: ["TASKalfa Series", "ECOSYS Series"],
+                characteristics: { maintenance: 85, reliability: 92, support: 85, easeOfUse: 85, repairability: 88 }
+            },
+             "Sharp": {
+                models: ["MX-B/C Series"],
+                characteristics: { maintenance: 70, reliability: 75, support: 60, easeOfUse: 80, repairability: 65 }
+            },
+            "Xerox": {
+                models: ["AltaLink C8200/B8100 Series", "VersaLink C7100/B7100 Series"],
+                characteristics: { maintenance: 65, reliability: 70, support: 55, easeOfUse: 85, repairability: 60 }
+            },
+            "HP": {
+                models: ["LaserJet Enterprise M700/M800 Series", "PageWide Enterprise Series"],
+                characteristics: { maintenance: 75, reliability: 80, support: 70, easeOfUse: 85, repairability: 70 }
+            },
+            "Epson": {
+                models: ["WorkForce Enterprise Series", "WorkForce Pro Series"],
+                characteristics: { maintenance: 88, reliability: 90, support: 85, easeOfUse: 87, repairability: 85 }
+            }
+        };
 
         const translations = {
             en: {
                 title: '🖨️ Printer Leasing Contract Tool',
+                templates: 'Contract Templates',
+                importTemplatesBtn: '📂 Import Templates (CSV)',
+                downloadTemplateBtn: '📥 Download Template',
                 generalInfo: 'General Information',
                 contractName: 'Contract Name',
                 contractNamePlaceholder: 'e.g., Contract A (HP LaserJet Pro)',
@@ -236,6 +350,16 @@
                 providerPlaceholder: 'e.g., Printer Solutions Inc.',
                 duration: 'Contract Duration (Months)',
                 durationPlaceholder: 'e.g., 36',
+                printerInfo: 'Printer Information',
+                manufacturer: 'Manufacturer',
+                manufacturerPlaceholder: 'e.g., Canon',
+                model: 'Model',
+                modelPlaceholder: 'e.g., imageRUNNER...',
+                maintenance: 'Maintenance (0-100)',
+                reliability: 'Reliability (0-100)',
+                support: 'Support (0-100)',
+                easeOfUse: 'Ease of Use (0-100)',
+                repairability: 'Repairability (0-100)',
                 coreCosts: 'Core Costs',
                 baseCost: 'Base Monthly Cost (€)',
                 baseCostPlaceholder: 'e.g., 50.00',
@@ -267,6 +391,9 @@
             },
             fr: {
                 title: '🖨️ Outil de Contrat de Location d\'Imprimante',
+                templates: 'Modèles de Contrat',
+                importTemplatesBtn: '📂 Importer des Modèles (CSV)',
+                downloadTemplateBtn: '📥 Télécharger le Modèle',
                 generalInfo: 'Informations Générales',
                 contractName: 'Nom du Contrat',
                 contractNamePlaceholder: 'ex: Contrat A (HP LaserJet Pro)',
@@ -274,6 +401,16 @@
                 providerPlaceholder: 'ex: Printer Solutions Inc.',
                 duration: 'Durée du Contrat (Mois)',
                 durationPlaceholder: 'ex: 36',
+                printerInfo: 'Informations sur l\'Imprimante',
+                manufacturer: 'Fabricant',
+                manufacturerPlaceholder: 'ex: Canon',
+                model: 'Modèle',
+                modelPlaceholder: 'ex: imageRUNNER...',
+                maintenance: 'Maintenance (0-100)',
+                reliability: 'Fiabilité (0-100)',
+                support: 'Support (0-100)',
+                easeOfUse: 'Facilité d\'Utilisation (0-100)',
+                repairability: 'Réparabilité (0-100)',
                 coreCosts: 'Coûts de Base',
                 baseCost: 'Coût Mensuel de Base (€)',
                 baseCostPlaceholder: 'ex: 50.00',
@@ -320,8 +457,8 @@
                 }
             });
             document.querySelectorAll('.dynamic-list-item').forEach(item => {
-                item.querySelector('[placeholder="Description"]').placeholder = translations[lang].descriptionPlaceholder;
-                item.querySelector('[placeholder="Amount (€)"]').placeholder = translations[lang].amountPlaceholder;
+                item.querySelector('input[type="text"]').placeholder = translations[lang].descriptionPlaceholder;
+                item.querySelector('input[type="number"]').placeholder = translations[lang].amountPlaceholder;
             });
              document.querySelectorAll('.lang-switcher span').forEach(span => span.classList.remove('active'));
              document.getElementById(`lang-${lang}`).classList.add('active');
@@ -330,7 +467,6 @@
         document.getElementById('lang-fr').addEventListener('click', () => setLanguage('fr'));
         document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
 
-        // --- DYNAMIC ROW MANAGEMENT ---
         function createDynamicRow(type) {
             const list = document.getElementById(`${type}-list`);
             const item = document.createElement('div');
@@ -355,6 +491,246 @@
 
         document.getElementById('add-extra-cost').addEventListener('click', () => createDynamicRow('extra-costs'));
         document.getElementById('add-discount').addEventListener('click', () => createDynamicRow('discounts'));
+        
+        // --- TEMPLATE FUNCTIONALITY ---
+
+        document.getElementById('download-template').addEventListener('click', () => {
+            const headers = "name;provider;manufacturer;model;maintenance;reliability;support;easeOfUse;repairability;baseMonthlyCost;contractDurationMonths;includedPagesMonochrome;costPerPageMonochromeOverrun;includedPagesColor;costPerPageColorOverrun;setupFee;deliveryFee;extraCosts;discounts";
+            const example1 = `Template A - Basic;Provider X;Canon;i-SENSYS X Series;85;90;88;87;80;50;36;5000;0.01;1000;0.05;100;50;[{"description":"Monthly Maintenance","amount":15,"frequency":"monthly"}];[]`;
+            const example2 = `Template B - Advanced;Provider Y;HP;LaserJet Enterprise M700 Series;75;80;70;85;70;120;24;10000;0.008;2500;0.04;0;0;[{"description":"On-site support","amount":200,"frequency":"yearly"}];[{"description":"First Month Free","amount":120,"frequency":"one-time"}]`;
+            const csvContent = `${headers}\n${example1}\n${example2}`;
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", "contract_template.csv");
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        document.getElementById('import-templates').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const csvText = e.target.result;
+                    const lines = csvText.trim().split(/\r?\n/);
+                    const headers = lines[0].split(';').map(h => h.trim());
+                    customTemplates = [];
+                    for (let i = 1; i < lines.length; i++) {
+                        if (lines[i].trim() === '') continue;
+                        const values = lines[i].split(';');
+                        const entry = {};
+                        for (let j = 0; j < headers.length; j++) {
+                            entry[headers[j]] = values[j] ? values[j].trim() : '';
+                        }
+                        customTemplates.push(entry);
+                    }
+                    setupTemplateAutocomplete();
+                    alert(`${customTemplates.length} templates loaded successfully!`);
+                } catch (error) {
+                    alert('Error parsing CSV file.');
+                    console.error("Error parsing CSV:", error);
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        function applyTemplate(template) {
+            if (!template) return;
+            document.getElementById('contract-name').value = template.name || '';
+            document.getElementById('provider').value = template.provider || '';
+            document.getElementById('manufacturer').value = template.manufacturer || '';
+            document.getElementById('model').value = template.model || '';
+            document.getElementById('maintenance').value = template.maintenance || '';
+            document.getElementById('reliability').value = template.reliability || '';
+            document.getElementById('support').value = template.support || '';
+            document.getElementById('easeOfUse').value = template.easeOfUse || '';
+            document.getElementById('repairability').value = template.repairability || '';
+            document.getElementById('base-cost').value = template.baseMonthlyCost || '';
+            document.getElementById('duration').value = template.contractDurationMonths || '';
+            document.getElementById('mono-included').value = template.includedPagesMonochrome || '';
+            document.getElementById('mono-overrun').value = template.costPerPageMonochromeOverrun || '';
+            document.getElementById('color-included').value = template.includedPagesColor || '';
+            document.getElementById('color-overrun').value = template.costPerPageColorOverrun || '';
+            document.getElementById('setup-fee').value = template.setupFee || '';
+            document.getElementById('delivery-fee').value = template.deliveryFee || '';
+
+            const populateDynamicList = (type, jsonString) => {
+                const listContainer = document.getElementById(`${type}-list`);
+                listContainer.innerHTML = '';
+                try {
+                    const dataList = JSON.parse(jsonString || '[]');
+                    if (Array.isArray(dataList)) {
+                        dataList.forEach(dataItem => {
+                            const row = createDynamicRow(type);
+                            row.querySelector(`.${type}-desc`).value = dataItem.description || '';
+                            row.querySelector(`.${type}-amount`).value = dataItem.amount || '';
+                            row.querySelector(`.${type}-freq`).value = dataItem.frequency || 'monthly';
+                        });
+                    }
+                } catch (e) { console.error(`Failed to parse dynamic list from template: ${e}`) }
+            };
+
+            populateDynamicList('extra-costs', template.extraCosts);
+            populateDynamicList('discounts', template.discounts);
+        }
+
+        function setupTemplateAutocomplete() {
+            const inp = document.getElementById('contract-name');
+            let currentFocus;
+
+            const closeAllLists = (elmnt) => {
+                const x = document.getElementsByClassName("autocomplete-items");
+                for (let item of x) {
+                    if (elmnt != item && elmnt != inp) {
+                        item.parentNode.removeChild(item);
+                    }
+                }
+            };
+            
+            inp.addEventListener("input", function() {
+                let a, b, val = this.value;
+                closeAllLists();
+                if (!val || customTemplates.length === 0) { return false; }
+                currentFocus = -1;
+                a = document.createElement("DIV");
+                a.setAttribute("id", this.id + "autocomplete-list");
+                a.setAttribute("class", "autocomplete-items");
+                this.parentNode.appendChild(a);
+
+                for (let i = 0; i < customTemplates.length; i++) {
+                    if (customTemplates[i].name.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                        b = document.createElement("DIV");
+                        b.innerHTML = `<strong>${customTemplates[i].name.substr(0, val.length)}</strong>${customTemplates[i].name.substr(val.length)}`;
+                        b.dataset.templateIndex = i;
+                        b.addEventListener("click", function() {
+                            const selectedTemplate = customTemplates[this.dataset.templateIndex];
+                            applyTemplate(selectedTemplate);
+                            closeAllLists();
+                        });
+                        a.appendChild(b);
+                    }
+                }
+            });
+
+            inp.addEventListener("keydown", function(e) {
+                let x = document.getElementById(this.id + "autocomplete-list");
+                if (x) x = x.getElementsByTagName("div");
+                if (e.keyCode == 40) { // Down
+                    currentFocus++;
+                    addActive(x);
+                } else if (e.keyCode == 38) { // Up
+                    currentFocus--;
+                    addActive(x);
+                } else if (e.keyCode == 13) { // Enter
+                    e.preventDefault();
+                    if (currentFocus > -1 && x) x[currentFocus].click();
+                }
+            });
+
+            function addActive(x) {
+                if (!x) return;
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                x[currentFocus].classList.add("autocomplete-active");
+            }
+
+            function removeActive(x) {
+                for (let item of x) item.classList.remove("autocomplete-active");
+            }
+            
+            document.addEventListener("click", (e) => closeAllLists(e.target));
+        }
+
+        function setupGenericAutocomplete(inp, dataArray) {
+             let currentFocus;
+
+            const closeAllLists = (elmnt) => {
+                const x = document.getElementsByClassName("autocomplete-items");
+                for (let item of x) {
+                    if (elmnt != item && elmnt != inp) {
+                        item.parentNode.removeChild(item);
+                    }
+                }
+            };
+            
+            inp.addEventListener("input", function() {
+                let a, b, i, val = this.value;
+                closeAllLists();
+                if (!val) { return false; }
+                currentFocus = -1;
+                a = document.createElement("DIV");
+                a.setAttribute("id", this.id + "autocomplete-list");
+                a.setAttribute("class", "autocomplete-items");
+                this.parentNode.appendChild(a);
+                for (i = 0; i < dataArray.length; i++) {
+                    if (dataArray[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                        b = document.createElement("DIV");
+                        b.innerHTML = "<strong>" + dataArray[i].substr(0, val.length) + "</strong>";
+                        b.innerHTML += dataArray[i].substr(val.length);
+                        b.innerHTML += "<input type='hidden' value='" + dataArray[i] + "'>";
+                        b.addEventListener("click", function(e) {
+                            inp.value = this.getElementsByTagName("input")[0].value;
+                            closeAllLists();
+                            if(inp.id === 'manufacturer') {
+                                handleManufacturerChange(inp.value);
+                            }
+                        });
+                        a.appendChild(b);
+                    }
+                }
+            });
+            inp.addEventListener("keydown", function(e) {
+                let x = document.getElementById(this.id + "autocomplete-list");
+                if (x) x = x.getElementsByTagName("div");
+                if (e.keyCode == 40) { // down
+                    currentFocus++;
+                    addActive(x);
+                } else if (e.keyCode == 38) { // up
+                    currentFocus--;
+                    addActive(x);
+                } else if (e.keyCode == 13) { // enter
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                        if (x) x[currentFocus].click();
+                    }
+                }
+            });
+            function addActive(x) {
+                if (!x) return false;
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                x[currentFocus].classList.add("autocomplete-active");
+            }
+            function removeActive(x) {
+                for (let i = 0; i < x.length; i++) {
+                    x[i].classList.remove("autocomplete-active");
+                }
+            }
+        }
+        
+        function handleManufacturerChange(manufacturerName) {
+            const data = printerInfoData[manufacturerName];
+            if(data) {
+                document.getElementById('maintenance').value = data.characteristics.maintenance;
+                document.getElementById('reliability').value = data.characteristics.reliability;
+                document.getElementById('support').value = data.characteristics.support;
+                document.getElementById('easeOfUse').value = data.characteristics.easeOfUse;
+                document.getElementById('repairability').value = data.characteristics.repairability;
+                setupGenericAutocomplete(document.getElementById('model'), data.models);
+            }
+        }
+
+        setupGenericAutocomplete(document.getElementById('manufacturer'), Object.keys(printerInfoData));
+
 
         // --- SAVE FUNCTIONALITY ---
         document.getElementById('save-btn').addEventListener('click', () => {
@@ -375,6 +751,15 @@
                 id: `contract-${crypto.randomUUID()}`,
                 name: document.getElementById('contract-name').value,
                 provider: document.getElementById('provider').value,
+                printerInfo: {
+                    manufacturer: document.getElementById('manufacturer').value,
+                    model: document.getElementById('model').value,
+                    maintenance: parseInt(document.getElementById('maintenance').value) || 0,
+                    reliability: parseInt(document.getElementById('reliability').value) || 0,
+                    support: parseInt(document.getElementById('support').value) || 0,
+                    easeOfUse: parseInt(document.getElementById('easeOfUse').value) || 0,
+                    repairability: parseInt(document.getElementById('repairability').value) || 0,
+                },
                 baseMonthlyCost: parseFloat(document.getElementById('base-cost').value) || 0,
                 contractDurationMonths: parseInt(document.getElementById('duration').value) || 0,
                 includedPagesMonochrome: parseInt(document.getElementById('mono-included').value) || 0,
@@ -408,6 +793,15 @@
                     
                     document.getElementById('contract-name').value = data.name || '';
                     document.getElementById('provider').value = data.provider || '';
+                    if(data.printerInfo) {
+                        document.getElementById('manufacturer').value = data.printerInfo.manufacturer || '';
+                        document.getElementById('model').value = data.printerInfo.model || '';
+                        document.getElementById('maintenance').value = data.printerInfo.maintenance || '';
+                        document.getElementById('reliability').value = data.printerInfo.reliability || '';
+                        document.getElementById('support').value = data.printerInfo.support || '';
+                        document.getElementById('easeOfUse').value = data.printerInfo.easeOfUse || '';
+                        document.getElementById('repairability').value = data.printerInfo.repairability || '';
+                    }
                     document.getElementById('base-cost').value = data.baseMonthlyCost || '';
                     document.getElementById('duration').value = data.contractDurationMonths || '';
                     document.getElementById('mono-included').value = data.includedPagesMonochrome || '';
@@ -443,6 +837,7 @@
         
         // Set initial language
         setLanguage(currentLanguage);
+        setupTemplateAutocomplete();
     });
     </script>
 </body>
