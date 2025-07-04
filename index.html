@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Printer Contract Management Tool</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7f9;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .container {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .lang-switcher {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+        }
+        .lang-switcher span {
+            cursor: pointer;
+            margin-left: 10px;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        .lang-switcher span:hover, .lang-switcher span.active {
+            opacity: 1;
+        }
+        fieldset {
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        legend {
+            padding: 0 10px;
+            font-weight: bold;
+            color: #005a9c;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="number"], select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        button, .import-label {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        button:hover, .import-label:hover {
+            background-color: #0056b3;
+        }
+        .import-label {
+            display: inline-block;
+        }
+        #import-file {
+            display: none;
+        }
+        .dynamic-list-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .remove-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 30px;
+            text-align: center;
+        }
+        .remove-btn:hover {
+            background-color: #c0392b;
+        }
+        .add-btn {
+            background-color: #2ecc71;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        .add-btn:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="lang-switcher">
+            <span id="lang-fr">🇫🇷</span>
+            <span id="lang-en" class="active">🇬🇧</span>
+        </div>
+
+        <h1 data-lang="title">🖨️ Printer Leasing Contract Tool</h1>
+
+        <div id="contract-form">
+            <fieldset>
+                <legend data-lang="generalInfo">General Information</legend>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="contract-name" data-lang="contractName">Contract Name</label>
+                        <input id="contract-name" type="text" data-lang-placeholder="contractNamePlaceholder">
+                    </div>
+                    <div class="form-group">
+                        <label for="provider" data-lang="provider">Provider</label>
+                        <input id="provider" type="text" data-lang-placeholder="providerPlaceholder">
+                    </div>
+                    <div class="form-group">
+                        <label for="duration" data-lang="duration">Contract Duration (Months)</label>
+                        <input id="duration" type="number" data-lang-placeholder="durationPlaceholder">
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend data-lang="coreCosts">Core Costs</legend>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="base-cost" data-lang="baseCost">Base Monthly Cost (€)</label>
+                        <input id="base-cost" type="number" step="0.01" data-lang-placeholder="baseCostPlaceholder">
+                    </div>
+                    <div class="form-group">
+                        <label for="setup-fee" data-lang="setupFee">Setup Fee (€)</label>
+                        <input id="setup-fee" type="number" step="0.01" data-lang-placeholder="setupFeePlaceholder">
+                    </div>
+                    <div class="form-group">
+                        <label for="delivery-fee" data-lang="deliveryFee">Delivery Fee (€)</label>
+                        <input id="delivery-fee" type="number" step="0.01" data-lang-placeholder="deliveryFeePlaceholder">
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend data-lang="pageCosts">Page Costs</legend>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="mono-included" data-lang="monoIncluded">Included Mono Pages</label>
+                        <input id="mono-included" type="number" data-lang-placeholder="monoIncludedPlaceholder">
+                    </div>
+                    <div class="form-group">
+                        <label for="mono-overrun" data-lang="monoOverrun">Mono Overrun Cost (€)</label>
+                        <input id="mono-overrun" type="number" step="0.001" data-lang-placeholder="monoOverrunPlaceholder">
+                    </div>
+                    <div class="form-group">
+                        <label for="color-included" data-lang="colorIncluded">Included Color Pages</label>
+                        <input id="color-included" type="number" data-lang-placeholder="colorIncludedPlaceholder">
+                    </div>
+                    <div class="form-group">
+                        <label for="color-overrun" data-lang="colorOverrun">Color Overrun Cost (€)</label>
+                        <input id="color-overrun" type="number" step="0.001" data-lang-placeholder="colorOverrunPlaceholder">
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend data-lang="extraCosts">Extra Costs</legend>
+                <div id="extra-costs-list"></div>
+                <button type="button" class="add-btn" id="add-extra-cost" data-lang="addExtraCost">Add Extra Cost</button>
+            </fieldset>
+
+            <fieldset>
+                <legend data-lang="discounts">Discounts</legend>
+                <div id="discounts-list"></div>
+                <button type="button" class="add-btn" id="add-discount" data-lang="addDiscount">Add Discount</button>
+            </fieldset>
+
+            <div class="button-group">
+                <button id="save-btn" data-lang="saveBtn">💾 Save as JSON</button>
+                <input type="file" id="import-file" accept=".json">
+                <label for="import-file" class="import-label" data-lang="importBtn">📂 Import from JSON</label>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let currentLanguage = 'en';
+
+        const translations = {
+            en: {
+                title: '🖨️ Printer Leasing Contract Tool',
+                generalInfo: 'General Information',
+                contractName: 'Contract Name',
+                contractNamePlaceholder: 'e.g., Contract A (HP LaserJet Pro)',
+                provider: 'Provider',
+                providerPlaceholder: 'e.g., Printer Solutions Inc.',
+                duration: 'Contract Duration (Months)',
+                durationPlaceholder: 'e.g., 36',
+                coreCosts: 'Core Costs',
+                baseCost: 'Base Monthly Cost (€)',
+                baseCostPlaceholder: 'e.g., 50.00',
+                setupFee: 'Setup Fee (€)',
+                setupFeePlaceholder: 'e.g., 100.00',
+                deliveryFee: 'Delivery Fee (€)',
+                deliveryFeePlaceholder: 'e.g., 50.00',
+                pageCosts: 'Page Costs',
+                monoIncluded: 'Included Mono Pages',
+                monoIncludedPlaceholder: 'e.g., 5000',
+                monoOverrun: 'Mono Overrun Cost (€)',
+                monoOverrunPlaceholder: 'e.g., 0.01',
+                colorIncluded: 'Included Color Pages',
+                colorIncludedPlaceholder: 'e.g., 1000',
+                colorOverrun: 'Color Overrun Cost (€)',
+                colorOverrunPlaceholder: 'e.g., 0.05',
+                extraCosts: 'Extra Costs',
+                addExtraCost: 'Add Extra Cost',
+                discounts: 'Discounts',
+                addDiscount: 'Add Discount',
+                saveBtn: '💾 Save as JSON',
+                importBtn: '📂 Import from JSON',
+                descriptionPlaceholder: 'Description',
+                amountPlaceholder: 'Amount (€)',
+                freqOneTime: 'One-Time',
+                freqMonthly: 'Monthly',
+                freqQuarterly: 'Quarterly',
+                freqYearly: 'Yearly'
+            },
+            fr: {
+                title: '🖨️ Outil de Contrat de Location d\'Imprimante',
+                generalInfo: 'Informations Générales',
+                contractName: 'Nom du Contrat',
+                contractNamePlaceholder: 'ex: Contrat A (HP LaserJet Pro)',
+                provider: 'Fournisseur',
+                providerPlaceholder: 'ex: Printer Solutions Inc.',
+                duration: 'Durée du Contrat (Mois)',
+                durationPlaceholder: 'ex: 36',
+                coreCosts: 'Coûts de Base',
+                baseCost: 'Coût Mensuel de Base (€)',
+                baseCostPlaceholder: 'ex: 50.00',
+                setupFee: 'Frais d\'Installation (€)',
+                setupFeePlaceholder: 'ex: 100.00',
+                deliveryFee: 'Frais de Livraison (€)',
+                deliveryFeePlaceholder: 'ex: 50.00',
+                pageCosts: 'Coûts par Page',
+                monoIncluded: 'Pages Mono Incluses',
+                monoIncludedPlaceholder: 'ex: 5000',
+                monoOverrun: 'Coût Dépassement Mono (€)',
+                monoOverrunPlaceholder: 'ex: 0.01',
+                colorIncluded: 'Pages Couleur Incluses',
+                colorIncludedPlaceholder: 'ex: 1000',
+                colorOverrun: 'Coût Dépassement Couleur (€)',
+                colorOverrunPlaceholder: 'ex: 0.05',
+                extraCosts: 'Coûts Supplémentaires',
+                addExtraCost: 'Ajouter un Coût',
+                discounts: 'Réductions',
+                addDiscount: 'Ajouter une Réduction',
+                saveBtn: '💾 Sauvegarder en JSON',
+                importBtn: '📂 Importer depuis JSON',
+                descriptionPlaceholder: 'Description',
+                amountPlaceholder: 'Montant (€)',
+                freqOneTime: 'Unique',
+                freqMonthly: 'Mensuel',
+                freqQuarterly: 'Trimestriel',
+                freqYearly: 'Annuel'
+            }
+        };
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                const key = el.getAttribute('data-lang');
+                if (translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+            document.querySelectorAll('[data-lang-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-lang-placeholder');
+                 if (translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+            document.querySelectorAll('.dynamic-list-item').forEach(item => {
+                item.querySelector('[placeholder="Description"]').placeholder = translations[lang].descriptionPlaceholder;
+                item.querySelector('[placeholder="Amount (€)"]').placeholder = translations[lang].amountPlaceholder;
+            });
+             document.querySelectorAll('.lang-switcher span').forEach(span => span.classList.remove('active'));
+             document.getElementById(`lang-${lang}`).classList.add('active');
+        }
+
+        document.getElementById('lang-fr').addEventListener('click', () => setLanguage('fr'));
+        document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
+
+        // --- DYNAMIC ROW MANAGEMENT ---
+        function createDynamicRow(type) {
+            const list = document.getElementById(`${type}-list`);
+            const item = document.createElement('div');
+            item.classList.add('dynamic-list-item');
+            item.innerHTML = `
+                <input type="text" class="${type}-desc" placeholder="${translations[currentLanguage].descriptionPlaceholder}">
+                <input type="number" step="0.01" class="${type}-amount" placeholder="${translations[currentLanguage].amountPlaceholder}">
+                <select class="${type}-freq">
+                    <option value="one-time">${translations[currentLanguage].freqOneTime}</option>
+                    <option value="monthly" selected>${translations[currentLanguage].freqMonthly}</option>
+                    <option value="quarterly">${translations[currentLanguage].freqQuarterly}</option>
+                    <option value="yearly">${translations[currentLanguage].freqYearly}</option>
+                </select>
+                <button type="button" class="remove-btn">X</button>
+            `;
+            list.appendChild(item);
+            item.querySelector('.remove-btn').addEventListener('click', () => {
+                item.remove();
+            });
+            return item;
+        }
+
+        document.getElementById('add-extra-cost').addEventListener('click', () => createDynamicRow('extra-costs'));
+        document.getElementById('add-discount').addEventListener('click', () => createDynamicRow('discounts'));
+
+        // --- SAVE FUNCTIONALITY ---
+        document.getElementById('save-btn').addEventListener('click', () => {
+            const getDynamicListData = (type) => {
+                const items = [];
+                document.querySelectorAll(`#${type}-list .dynamic-list-item`).forEach(item => {
+                    const description = item.querySelector(`.${type}-desc`).value;
+                    const amount = parseFloat(item.querySelector(`.${type}-amount`).value);
+                    const frequency = item.querySelector(`.${type}-freq`).value;
+                    if (description && !isNaN(amount)) {
+                        items.push({ description, amount, frequency });
+                    }
+                });
+                return items;
+            };
+
+            const contractData = {
+                id: `contract-${crypto.randomUUID()}`,
+                name: document.getElementById('contract-name').value,
+                provider: document.getElementById('provider').value,
+                baseMonthlyCost: parseFloat(document.getElementById('base-cost').value) || 0,
+                contractDurationMonths: parseInt(document.getElementById('duration').value) || 0,
+                includedPagesMonochrome: parseInt(document.getElementById('mono-included').value) || 0,
+                costPerPageMonochromeOverrun: parseFloat(document.getElementById('mono-overrun').value) || 0,
+                includedPagesColor: parseInt(document.getElementById('color-included').value) || 0,
+                costPerPageColorOverrun: parseFloat(document.getElementById('color-overrun').value) || 0,
+                setupFee: parseFloat(document.getElementById('setup-fee').value) || 0,
+                deliveryFee: parseFloat(document.getElementById('delivery-fee').value) || 0,
+                extraCosts: getDynamicListData('extra-costs'),
+                discounts: getDynamicListData('discounts')
+            };
+
+            const dataStr = JSON.stringify(contractData, null, 4);
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+            const exportFileDefaultName = `${contractData.name.replace(/[^a-z0-9]/gi, '_') || 'contract'}.json`;
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        });
+
+        // --- IMPORT FUNCTIONALITY ---
+        document.getElementById('import-file').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    document.getElementById('contract-name').value = data.name || '';
+                    document.getElementById('provider').value = data.provider || '';
+                    document.getElementById('base-cost').value = data.baseMonthlyCost || '';
+                    document.getElementById('duration').value = data.contractDurationMonths || '';
+                    document.getElementById('mono-included').value = data.includedPagesMonochrome || '';
+                    document.getElementById('mono-overrun').value = data.costPerPageMonochromeOverrun || '';
+                    document.getElementById('color-included').value = data.includedPagesColor || '';
+                    document.getElementById('color-overrun').value = data.costPerPageColorOverrun || '';
+                    document.getElementById('setup-fee').value = data.setupFee || '';
+                    document.getElementById('delivery-fee').value = data.deliveryFee || '';
+
+                    const populateDynamicList = (type, dataList) => {
+                        const listContainer = document.getElementById(`${type}-list`);
+                        listContainer.innerHTML = '';
+                        if (dataList && Array.isArray(dataList)) {
+                            dataList.forEach(dataItem => {
+                                const row = createDynamicRow(type);
+                                row.querySelector(`.${type}-desc`).value = dataItem.description || '';
+                                row.querySelector(`.${type}-amount`).value = dataItem.amount || '';
+                                row.querySelector(`.${type}-freq`).value = dataItem.frequency || 'monthly';
+                            });
+                        }
+                    };
+                    
+                    populateDynamicList('extra-costs', data.extraCosts);
+                    populateDynamicList('discounts', data.discounts);
+
+                } catch (error) {
+                    alert('Error: Could not parse the JSON file.');
+                    console.error("Error parsing JSON:", error);
+                }
+            };
+            reader.readAsText(file);
+        });
+        
+        // Set initial language
+        setLanguage(currentLanguage);
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  webapp:
+    # This tells Docker Compose to build the image from the Dockerfile
+    # in the current directory (.) and name it printer-app.
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: printer-app
+
+    # This is the key part for port assignment.
+    # By only specifying the container's port (80), Docker will automatically
+    # map it to a random, unused port on your host machine.
+    ports:
+      - "80"
+
+    # Restarts the container automatically if it crashes.
+    restart: unless-stopped
