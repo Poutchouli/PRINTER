@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Printer Contract Management</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #005a9c;
+        }
+        .container {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            position: relative; /* For autocomplete positioning */
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="number"], input[type="date"], select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            border-bottom: none;
+            border-top: none;
+            z-index: 99;
+            top: 100%;
+            left: 0;
+            right: 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #fff;
+            border-bottom: 1px solid #d4d4d4;
+        }
+        .autocomplete-items div:hover {
+            background-color: #e9e9e9;
+        }
+        .autocomplete-active {
+            background-color: #007bff !important;
+            color: #ffffff;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        button, .import-label {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        button:hover, .import-label:hover {
+            background-color: #0056b3;
+        }
+        .import-label {
+            display: inline-block;
+        }
+        #import-file {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🖨️ Printer Leasing Contract Tool</h1>
+
+        <div id="contract-form">
+            <h2>Contract Details</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="manufacturer">Manufacturer</label>
+                    <input id="manufacturer" type="text" placeholder="e.g., Canon" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="model">Model</label>
+                    <input id="model" type="text" placeholder="e.g., imageRUNNER..." autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="lease-price">Lease Price (€/month)</label>
+                    <input id="lease-price" type="number" step="0.01" placeholder="e.g., 150.50">
+                </div>
+                <div class="form-group">
+                    <label for="purchase-price">Purchase Price (€)</label>
+                    <input id="purchase-price" type="number" step="0.01" placeholder="e.g., 3500">
+                </div>
+            </div>
+
+            <h2>Performance Assessment (0-100)</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="maintenance">Maintenance</label>
+                    <input id="maintenance" type="number" min="0" max="100">
+                </div>
+                <div class="form-group">
+                    <label for="reliability">Reliability</label>
+                    <input id="reliability" type="number" min="0" max="100">
+                </div>
+                <div class="form-group">
+                    <label for="support">Support</label>
+                    <input id="support" type="number" min="0" max="100">
+                </div>
+                <div class="form-group">
+                    <label for="ease-of-use">Ease of Use</label>
+                    <input id="ease-of-use" type="number" min="0" max="100">
+                </div>
+                <div class="form-group">
+                    <label for="repairability">Repairability</label>
+                    <input id="repairability" type="number" min="0" max="100">
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button id="save-btn">💾 Save as JSON</button>
+                <input type="file" id="import-file" accept=".json">
+                <label for="import-file" class="import-label">📂 Import from JSON</label>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Data derived from the provided analysis report
+        const printerData = {
+            "Canon": {
+                models: ["imageRUNNER ADVANCE DX C3800 Series", "imageRUNNER ADVANCE DX 6800 Series", "i-SENSYS X Series", "imageFORCE C5100 Series"],
+                characteristics: { maintenance: 85, reliability: 90, support: 88, easeOfUse: 87, repairability: 80 }
+            },
+            "Toshiba": {
+                models: ["e-STUDIO 9029A", "e-STUDIO 7527AC", "e-STUDIO 409S", "e-STUDIO 509CS"],
+                characteristics: { maintenance: 85, reliability: 88, support: 80, easeOfUse: 87, repairability: 80 }
+            },
+            "Ricoh": {
+                models: ["IM C2010", "IM C4510", "IM 2500", "IM 460F"],
+                characteristics: { maintenance: 82, reliability: 88, support: 80, easeOfUse: 89, repairability: 78 }
+            },
+            "Konica Minolta": {
+                models: ["bizhub C250i", "bizhub C450i", "bizhub 4051i", "bizhub 301i"],
+                characteristics: { maintenance: 80, reliability: 90, support: 82, easeOfUse: 85, repairability: 75 }
+            },
+            "Koesio (Kyocera)": {
+                models: ["TASKalfa 2554ci", "TASKalfa 7054ci", "ECOSYS MA4500x", "ECOSYS M4125idn"],
+                characteristics: { maintenance: 85, reliability: 92, support: 85, easeOfUse: 85, repairability: 88 }
+            },
+            "Sharp": {
+                models: ["MX-B707F", "MX-B557F", "MX-C358F"],
+                characteristics: { maintenance: 70, reliability: 75, support: 60, easeOfUse: 80, repairability: 65 }
+            },
+            "Xerox": {
+                models: ["AltaLink C8200 Series", "AltaLink B8100 Series", "VersaLink C7100 Series", "VersaLink B7100 Series"],
+                characteristics: { maintenance: 65, reliability: 70, support: 55, easeOfUse: 85, repairability: 60 }
+            },
+            "HP": {
+                models: ["LaserJet Enterprise M725dn", "Color LaserJet Enterprise Flow M880z", "PageWide Enterprise 780", "LaserJet Pro 4102dw"],
+                characteristics: { maintenance: 75, reliability: 80, support: 70, easeOfUse: 85, repairability: 70 }
+            },
+            "Epson": {
+                models: ["WorkForce Enterprise AM-C4000", "WorkForce Pro WF-C878RDWF", "EcoTank ET-15000"],
+                characteristics: { maintenance: 88, reliability: 90, support: 85, easeOfUse: 87, repairability: 85 }
+            }
+        };
+
+        const manufacturerInput = document.getElementById('manufacturer');
+        const modelInput = document.getElementById('model');
+
+        // Autocomplete Function
+        function autocomplete(inp, arr) {
+            let currentFocus;
+            inp.addEventListener("input", function() {
+                let a, b, val = this.value;
+                closeAllLists();
+                if (!val) { return false; }
+                currentFocus = -1;
+                a = document.createElement("DIV");
+                a.setAttribute("id", this.id + "autocomplete-list");
+                a.setAttribute("class", "autocomplete-items");
+                this.parentNode.appendChild(a);
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                        b = document.createElement("DIV");
+                        b.innerHTML = `<strong>${arr[i].substr(0, val.length)}</strong>${arr[i].substr(val.length)}`;
+                        b.innerHTML += `<input type='hidden' value='${arr[i]}'>`;
+                        b.addEventListener("click", function() {
+                            inp.value = this.getElementsByTagName("input")[0].value;
+                            closeAllLists();
+                            // If the manufacturer input is changed, trigger updates
+                            if (inp.id === 'manufacturer') {
+                                handleManufacturerChange(inp.value);
+                            }
+                        });
+                        a.appendChild(b);
+                    }
+                }
+            });
+            inp.addEventListener("keydown", function(e) {
+                let x = document.getElementById(this.id + "autocomplete-list");
+                if (x) x = x.getElementsByTagName("div");
+                if (e.keyCode == 40) { // Down
+                    currentFocus++;
+                    addActive(x);
+                } else if (e.keyCode == 38) { // Up
+                    currentFocus--;
+                    addActive(x);
+                } else if (e.keyCode == 13) { // Enter
+                    e.preventDefault();
+                    if (currentFocus > -1 && x) {
+                        x[currentFocus].click();
+                    }
+                }
+            });
+            function addActive(x) {
+                if (!x) return;
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                x[currentFocus].classList.add("autocomplete-active");
+            }
+            function removeActive(x) {
+                for (let item of x) {
+                    item.classList.remove("autocomplete-active");
+                }
+            }
+            function closeAllLists(elmnt) {
+                const x = document.getElementsByClassName("autocomplete-items");
+                for (let item of x) {
+                    if (elmnt != item && elmnt != inp) {
+                        item.parentNode.removeChild(item);
+                    }
+                }
+            }
+            document.addEventListener("click", (e) => closeAllLists(e.target));
+        }
+
+        // Handle autofill when manufacturer is selected
+        function handleManufacturerChange(manufacturer) {
+            const data = printerData[manufacturer];
+            if (data) {
+                document.getElementById('maintenance').value = data.characteristics.maintenance;
+                document.getElementById('reliability').value = data.characteristics.reliability;
+                document.getElementById('support').value = data.characteristics.support;
+                document.getElementById('ease-of-use').value = data.characteristics.easeOfUse;
+                document.getElementById('repairability').value = data.characteristics.repairability;
+                
+                // Update autocomplete for models
+                autocomplete(modelInput, data.models || []);
+            } else {
+                 // Clear fields if manufacturer not found
+                ['maintenance', 'reliability', 'support', 'ease-of-use', 'repairability'].forEach(id => document.getElementById(id).value = '');
+            }
+            modelInput.value = ''; // Clear model input
+        }
+
+        // Initialize autocomplete for manufacturers
+        autocomplete(manufacturerInput, Object.keys(printerData));
+
+        // Save Button Logic
+        document.getElementById('save-btn').addEventListener('click', () => {
+            const contractData = {
+                manufacturer: document.getElementById('manufacturer').value,
+                model: document.getElementById('model').value,
+                leasePrice: document.getElementById('lease-price').value,
+                purchasePrice: document.getElementById('purchase-price').value,
+                maintenance: document.getElementById('maintenance').value,
+                reliability: document.getElementById('reliability').value,
+                support: document.getElementById('support').value,
+                easeOfUse: document.getElementById('ease-of-use').value,
+                repairability: document.getElementById('repairability').value
+            };
+            const dataStr = JSON.stringify(contractData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const exportFileDefaultName = 'printer_contract.json';
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        });
+
+        // Import Button Logic
+        document.getElementById('import-file').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    document.getElementById('manufacturer').value = data.manufacturer || '';
+                    document.getElementById('model').value = data.model || '';
+                    document.getElementById('lease-price').value = data.leasePrice || '';
+                    document.getElementById('purchase-price').value = data.purchasePrice || '';
+                    document.getElementById('maintenance').value = data.maintenance || '';
+                    document.getElementById('reliability').value = data.reliability || '';
+                    document.getElementById('support').value = data.support || '';
+                    document.getElementById('ease-of-use').value = data.easeOfUse || '';
+                    document.getElementById('repairability').value = data.repairability || '';
+                } catch (error) {
+                    alert('Error: Could not parse the JSON file.');
+                    console.error("Error parsing JSON:", error);
+                }
+            };
+            reader.readAsText(file);
+        });
+    });
+    </script>
+</body>
+</html>
