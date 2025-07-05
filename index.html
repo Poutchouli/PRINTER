@@ -157,6 +157,25 @@
             background-color: #007bff !important;
             color: #ffffff;
         }
+        
+        /* Additional form styling for Windows */
+        .form-group {
+            position: relative;
+        }
+        
+        /* Error display styles */
+        .error-message {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 9999;
+            font-family: Arial, sans-serif;
+        }
     </style>
 </head>
 <body>
@@ -293,604 +312,431 @@
         </div>
     </div>
 
+    <!-- Load JavaScript Modules -->
+    <script src="js/logger.js"></script>
+    <script src="js/module-registry.js"></script>
+    <script src="js/translation-manager.js"></script>
+    <script src="js/printer-database.js"></script>
+    <script src="js/autocomplete-manager.js"></script>
+    <script src="js/template-manager.js"></script>
+    <script src="js/form-manager.js"></script>
+    <script src="js/debug-panel.js"></script>
+
+    <!-- Application Initialization -->
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        let currentLanguage = 'en';
-        let customTemplates = [];
+    // Initialize global logger and module registry with detailed error checking
+    console.log('=== JavaScript Module Loading Debug ===');
+    
+    // Check if classes are defined
+    console.log('Logger class available:', typeof Logger);
+    console.log('ModuleRegistry class available:', typeof ModuleRegistry);
+    console.log('TranslationManager class available:', typeof TranslationManager);
+    console.log('PrinterDatabase class available:', typeof PrinterDatabase);
+    console.log('AutocompleteManager class available:', typeof AutocompleteManager);
+    console.log('TemplateManager class available:', typeof TemplateManager);
+    console.log('FormManager class available:', typeof FormManager);
+    console.log('DebugPanel class available:', typeof DebugPanel);
+    
+    // Create application namespace to avoid conflicts
+    window.PrinterApp = {};
+    
+    try {
+        console.log('Creating AppLogger instance...');
+        window.PrinterApp.logger = new Logger();
+        // Keep backward compatibility
+        window.AppLogger = window.PrinterApp.logger;
+        console.log('✓ AppLogger created successfully');
+        console.log('AppLogger type:', typeof window.AppLogger);
+    } catch (error) {
+        console.error('✗ Failed to create AppLogger:', error.message, error.stack);
+        throw new Error('AppLogger initialization failed: ' + error.message);
+    }
+    
+    try {
+        console.log('Creating ModuleRegistry instance...');
+        window.PrinterApp.moduleRegistry = new ModuleRegistry();
+        // Keep backward compatibility
+        window.ModuleRegistry = window.PrinterApp.moduleRegistry;
+        console.log('✓ ModuleRegistry created successfully');
+        console.log('ModuleRegistry type:', typeof window.ModuleRegistry);
+        console.log('ModuleRegistry.register type:', typeof window.ModuleRegistry.register);
+    } catch (error) {
+        console.error('✗ Failed to create ModuleRegistry:', error.message, error.stack);
+        throw new Error('ModuleRegistry initialization failed: ' + error.message);
+    }
 
-        const printerInfoData = {
-            "Canon": {
-                models: ["imageRUNNER ADVANCE DX C3800 Series", "imageRUNNER ADVANCE DX 6800 Series", "i-SENSYS X Series"],
-                characteristics: { maintenance: 85, reliability: 90, support: 88, easeOfUse: 87, repairability: 80 }
-            },
-            "Toshiba": {
-                models: ["e-STUDIO 7527AC", "e-STUDIO 6529A", "e-STUDIO 509CS"],
-                characteristics: { maintenance: 85, reliability: 88, support: 80, easeOfUse: 87, repairability: 80 }
-            },
-            "Ricoh": {
-                models: ["IM C Series", "IM Series"],
-                characteristics: { maintenance: 82, reliability: 88, support: 80, easeOfUse: 89, repairability: 78 }
-            },
-            "Konica Minolta": {
-                models: ["bizhub i-Series"],
-                characteristics: { maintenance: 80, reliability: 90, support: 82, easeOfUse: 85, repairability: 75 }
-            },
-            "Koesio (Kyocera)": {
-                models: ["TASKalfa Series", "ECOSYS Series"],
-                characteristics: { maintenance: 85, reliability: 92, support: 85, easeOfUse: 85, repairability: 88 }
-            },
-             "Sharp": {
-                models: ["MX-B/C Series"],
-                characteristics: { maintenance: 70, reliability: 75, support: 60, easeOfUse: 80, repairability: 65 }
-            },
-            "Xerox": {
-                models: ["AltaLink C8200/B8100 Series", "VersaLink C7100/B7100 Series"],
-                characteristics: { maintenance: 65, reliability: 70, support: 55, easeOfUse: 85, repairability: 60 }
-            },
-            "HP": {
-                models: ["LaserJet Enterprise M700/M800 Series", "PageWide Enterprise Series"],
-                characteristics: { maintenance: 75, reliability: 80, support: 70, easeOfUse: 85, repairability: 70 }
-            },
-            "Epson": {
-                models: ["WorkForce Enterprise Series", "WorkForce Pro Series"],
-                characteristics: { maintenance: 88, reliability: 90, support: 85, easeOfUse: 87, repairability: 85 }
-            }
-        };
+    document.addEventListener('DOMContentLoaded', async () => {
+        console.log('=== DOM Content Loaded - Starting App Initialization ===');
+        try {
+            AppLogger.info('App', 'Starting Printer Contract Management Tool');
+            console.log('✓ AppLogger.info() call successful');
 
-        const translations = {
-            en: {
-                title: '🖨️ Printer Leasing Contract Tool',
-                templates: 'Contract Templates',
-                importTemplatesBtn: '📂 Import Templates (CSV)',
-                downloadTemplateBtn: '📥 Download Template',
-                generalInfo: 'General Information',
-                contractName: 'Contract Name',
-                contractNamePlaceholder: 'e.g., Contract A (HP LaserJet Pro)',
-                provider: 'Provider',
-                providerPlaceholder: 'e.g., Printer Solutions Inc.',
-                duration: 'Contract Duration (Months)',
-                durationPlaceholder: 'e.g., 36',
-                printerInfo: 'Printer Information',
-                manufacturer: 'Manufacturer',
-                manufacturerPlaceholder: 'e.g., Canon',
-                model: 'Model',
-                modelPlaceholder: 'e.g., imageRUNNER...',
-                maintenance: 'Maintenance (0-100)',
-                reliability: 'Reliability (0-100)',
-                support: 'Support (0-100)',
-                easeOfUse: 'Ease of Use (0-100)',
-                repairability: 'Repairability (0-100)',
-                coreCosts: 'Core Costs',
-                baseCost: 'Base Monthly Cost (€)',
-                baseCostPlaceholder: 'e.g., 50.00',
-                setupFee: 'Setup Fee (€)',
-                setupFeePlaceholder: 'e.g., 100.00',
-                deliveryFee: 'Delivery Fee (€)',
-                deliveryFeePlaceholder: 'e.g., 50.00',
-                pageCosts: 'Page Costs',
-                monoIncluded: 'Included Mono Pages',
-                monoIncludedPlaceholder: 'e.g., 5000',
-                monoOverrun: 'Mono Overrun Cost (€)',
-                monoOverrunPlaceholder: 'e.g., 0.01',
-                colorIncluded: 'Included Color Pages',
-                colorIncludedPlaceholder: 'e.g., 1000',
-                colorOverrun: 'Color Overrun Cost (€)',
-                colorOverrunPlaceholder: 'e.g., 0.05',
-                extraCosts: 'Extra Costs',
-                addExtraCost: 'Add Extra Cost',
-                discounts: 'Discounts',
-                addDiscount: 'Add Discount',
-                saveBtn: '💾 Save as JSON',
-                importBtn: '📂 Import from JSON',
-                descriptionPlaceholder: 'Description',
-                amountPlaceholder: 'Amount (€)',
-                freqOneTime: 'One-Time',
-                freqMonthly: 'Monthly',
-                freqQuarterly: 'Quarterly',
-                freqYearly: 'Yearly'
-            },
-            fr: {
-                title: '🖨️ Outil de Contrat de Location d\'Imprimante',
-                templates: 'Modèles de Contrat',
-                importTemplatesBtn: '📂 Importer des Modèles (CSV)',
-                downloadTemplateBtn: '📥 Télécharger le Modèle',
-                generalInfo: 'Informations Générales',
-                contractName: 'Nom du Contrat',
-                contractNamePlaceholder: 'ex: Contrat A (HP LaserJet Pro)',
-                provider: 'Fournisseur',
-                providerPlaceholder: 'ex: Printer Solutions Inc.',
-                duration: 'Durée du Contrat (Mois)',
-                durationPlaceholder: 'ex: 36',
-                printerInfo: 'Informations sur l\'Imprimante',
-                manufacturer: 'Fabricant',
-                manufacturerPlaceholder: 'ex: Canon',
-                model: 'Modèle',
-                modelPlaceholder: 'ex: imageRUNNER...',
-                maintenance: 'Maintenance (0-100)',
-                reliability: 'Fiabilité (0-100)',
-                support: 'Support (0-100)',
-                easeOfUse: 'Facilité d\'Utilisation (0-100)',
-                repairability: 'Réparabilité (0-100)',
-                coreCosts: 'Coûts de Base',
-                baseCost: 'Coût Mensuel de Base (€)',
-                baseCostPlaceholder: 'ex: 50.00',
-                setupFee: 'Frais d\'Installation (€)',
-                setupFeePlaceholder: 'ex: 100.00',
-                deliveryFee: 'Frais de Livraison (€)',
-                deliveryFeePlaceholder: 'ex: 50.00',
-                pageCosts: 'Coûts par Page',
-                monoIncluded: 'Pages Mono Incluses',
-                monoIncludedPlaceholder: 'ex: 5000',
-                monoOverrun: 'Coût Dépassement Mono (€)',
-                monoOverrunPlaceholder: 'ex: 0.01',
-                colorIncluded: 'Pages Couleur Incluses',
-                colorIncludedPlaceholder: 'ex: 1000',
-                colorOverrun: 'Coût Dépassement Couleur (€)',
-                colorOverrunPlaceholder: 'ex: 0.05',
-                extraCosts: 'Coûts Supplémentaires',
-                addExtraCost: 'Ajouter un Coût',
-                discounts: 'Réductions',
-                addDiscount: 'Ajouter une Réduction',
-                saveBtn: '💾 Sauvegarder en JSON',
-                importBtn: '📂 Importer depuis JSON',
-                descriptionPlaceholder: 'Description',
-                amountPlaceholder: 'Montant (€)',
-                freqOneTime: 'Unique',
-                freqMonthly: 'Mensuel',
-                freqQuarterly: 'Trimestriel',
-                freqYearly: 'Annuel'
-            }
-        };
-
-        function setLanguage(lang) {
-            currentLanguage = lang;
-            document.querySelectorAll('[data-lang]').forEach(el => {
-                const key = el.getAttribute('data-lang');
-                if (translations[lang][key]) {
-                    el.textContent = translations[lang][key];
-                }
-            });
-            document.querySelectorAll('[data-lang-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-lang-placeholder');
-                 if (translations[lang][key]) {
-                    el.placeholder = translations[lang][key];
-                }
-            });
-            document.querySelectorAll('.dynamic-list-item').forEach(item => {
-                item.querySelector('input[type="text"]').placeholder = translations[lang].descriptionPlaceholder;
-                item.querySelector('input[type="number"]').placeholder = translations[lang].amountPlaceholder;
-            });
-             document.querySelectorAll('.lang-switcher span').forEach(span => span.classList.remove('active'));
-             document.getElementById(`lang-${lang}`).classList.add('active');
-        }
-
-        document.getElementById('lang-fr').addEventListener('click', () => setLanguage('fr'));
-        document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
-
-        function createDynamicRow(type) {
-            const list = document.getElementById(`${type}-list`);
-            const item = document.createElement('div');
-            item.classList.add('dynamic-list-item');
-            item.innerHTML = `
-                <input type="text" class="${type}-desc" placeholder="${translations[currentLanguage].descriptionPlaceholder}">
-                <input type="number" step="0.01" class="${type}-amount" placeholder="${translations[currentLanguage].amountPlaceholder}">
-                <select class="${type}-freq">
-                    <option value="one-time">${translations[currentLanguage].freqOneTime}</option>
-                    <option value="monthly" selected>${translations[currentLanguage].freqMonthly}</option>
-                    <option value="quarterly">${translations[currentLanguage].freqQuarterly}</option>
-                    <option value="yearly">${translations[currentLanguage].freqYearly}</option>
-                </select>
-                <button type="button" class="remove-btn">X</button>
-            `;
-            list.appendChild(item);
-            item.querySelector('.remove-btn').addEventListener('click', () => {
-                item.remove();
-            });
-            return item;
-        }
-
-        document.getElementById('add-extra-cost').addEventListener('click', () => createDynamicRow('extra-costs'));
-        document.getElementById('add-discount').addEventListener('click', () => createDynamicRow('discounts'));
-        
-        // --- TEMPLATE FUNCTIONALITY ---
-
-        document.getElementById('download-template').addEventListener('click', () => {
-            const headers = "name;provider;manufacturer;model;maintenance;reliability;support;easeOfUse;repairability;baseMonthlyCost;contractDurationMonths;includedPagesMonochrome;costPerPageMonochromeOverrun;includedPagesColor;costPerPageColorOverrun;setupFee;deliveryFee;extraCosts;discounts";
+            // Register all modules with detailed error checking
+            console.log('=== Module Registration Phase ===');
             
-            // Field descriptions and current printer data for reference
-            const fieldDescriptions = `# CSV Template for Contract Templates - Current Printer Database
-# This template shows the current printer manufacturers and models available in autocomplete
-# You can use this data as reference when creating your contract templates
-# Below are all the current manufacturers, their models, and characteristics
-#
-# Current Available Manufacturers and Models:
-# Canon: imageRUNNER ADVANCE DX C3800 Series, imageRUNNER ADVANCE DX 6800 Series, i-SENSYS X Series
-# Toshiba: e-STUDIO 7527AC, e-STUDIO 6529A, e-STUDIO 509CS  
-# Ricoh: IM C Series, IM Series
-# Konica Minolta: bizhub i-Series
-# Koesio (Kyocera): TASKalfa Series, ECOSYS Series
-# Sharp: MX-B/C Series
-# Xerox: AltaLink C8200/B8100 Series, VersaLink C7100/B7100 Series
-# HP: LaserJet Enterprise M700/M800 Series, PageWide Enterprise Series
-# Epson: WorkForce Enterprise Series, WorkForce Pro Series
-#
-# Characteristics by Manufacturer (Maintenance, Reliability, Support, Ease of Use, Repairability):
-# Canon: 85, 90, 88, 87, 80
-# Toshiba: 85, 88, 80, 87, 80
-# Ricoh: 82, 88, 80, 89, 78
-# Konica Minolta: 80, 90, 82, 85, 75
-# Koesio (Kyocera): 85, 92, 85, 85, 88
-# Sharp: 70, 75, 60, 80, 65
-# Xerox: 65, 70, 55, 85, 60
-# HP: 75, 80, 70, 85, 70
-# Epson: 88, 90, 85, 87, 85
-#
-# Template Format Guide:
-# name = Contract Name, provider = Provider Name, manufacturer = Use from list above
-# model = Use models from manufacturer above, maintenance/reliability/support/easeOfUse/repairability = 0-100
-# Costs in euros, durations in months, pages as numbers
-# extraCosts/discounts = JSON format: [{"description":"Name","amount":0,"frequency":"monthly"}]
-# Frequency options: "one-time", "monthly", "quarterly", "yearly"
-#
-`;
-            
-            // Generate templates using actual printer data
-            let csvContent = fieldDescriptions + headers + '\n';
-            
-            // Create example templates for each manufacturer
-            Object.keys(printerInfoData).forEach((manufacturer, index) => {
-                const data = printerInfoData[manufacturer];
-                const firstModel = data.models[0];
-                const char = data.characteristics;
-                const templateName = `Template ${String.fromCharCode(65 + index)} - ${manufacturer}`;
-                const provider = `${manufacturer} Solutions Inc.`;
-                const baseCost = 50 + (index * 25); // Vary costs for examples
+            try {
+                console.log('1. Registering TranslationManager...');
                 
-                const templateRow = `${templateName};${provider};${manufacturer};${firstModel};${char.maintenance};${char.reliability};${char.support};${char.easeOfUse};${char.repairability};${baseCost}.00;36;5000;0.01${index};1000;0.0${5+index};100;50;[{"description":"Monthly support","amount":${15+index*5},"frequency":"monthly"}];[]`;
-                csvContent += templateRow + '\n';
-            });
-            
-            // Add empty template at the end
-            csvContent += ';;;;;;;;;;;;;;;;;;[];[]';
-            
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", "printer_database_template.csv");
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
-
-        document.getElementById('import-templates').addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const csvText = e.target.result;
-                    const lines = csvText.trim().split(/\r?\n/);
-                    const headers = lines[0].split(';').map(h => h.trim());
-                    customTemplates = [];
-                    for (let i = 1; i < lines.length; i++) {
-                        if (lines[i].trim() === '') continue;
-                        const values = lines[i].split(';');
-                        const entry = {};
-                        for (let j = 0; j < headers.length; j++) {
-                            entry[headers[j]] = values[j] ? values[j].trim() : '';
-                        }
-                        customTemplates.push(entry);
-                    }
-                    setupTemplateAutocomplete();
-                    alert(`${customTemplates.length} templates loaded successfully!`);
-                } catch (error) {
-                    alert('Error parsing CSV file.');
-                    console.error("Error parsing CSV:", error);
-                }
-            };
-            reader.readAsText(file);
-        });
-
-        function applyTemplate(template) {
-            if (!template) return;
-            document.getElementById('contract-name').value = template.name || '';
-            document.getElementById('provider').value = template.provider || '';
-            document.getElementById('manufacturer').value = template.manufacturer || '';
-            document.getElementById('model').value = template.model || '';
-            document.getElementById('maintenance').value = template.maintenance || '';
-            document.getElementById('reliability').value = template.reliability || '';
-            document.getElementById('support').value = template.support || '';
-            document.getElementById('easeOfUse').value = template.easeOfUse || '';
-            document.getElementById('repairability').value = template.repairability || '';
-            document.getElementById('base-cost').value = template.baseMonthlyCost || '';
-            document.getElementById('duration').value = template.contractDurationMonths || '';
-            document.getElementById('mono-included').value = template.includedPagesMonochrome || '';
-            document.getElementById('mono-overrun').value = template.costPerPageMonochromeOverrun || '';
-            document.getElementById('color-included').value = template.includedPagesColor || '';
-            document.getElementById('color-overrun').value = template.costPerPageColorOverrun || '';
-            document.getElementById('setup-fee').value = template.setupFee || '';
-            document.getElementById('delivery-fee').value = template.deliveryFee || '';
-
-            const populateDynamicList = (type, jsonString) => {
-                const listContainer = document.getElementById(`${type}-list`);
-                listContainer.innerHTML = '';
-                try {
-                    const dataList = JSON.parse(jsonString || '[]');
-                    if (Array.isArray(dataList)) {
-                        dataList.forEach(dataItem => {
-                            const row = createDynamicRow(type);
-                            row.querySelector(`.${type}-desc`).value = dataItem.description || '';
-                            row.querySelector(`.${type}-amount`).value = dataItem.amount || '';
-                            row.querySelector(`.${type}-freq`).value = dataItem.frequency || 'monthly';
-                        });
-                    }
-                } catch (e) { console.error(`Failed to parse dynamic list from template: ${e}`) }
-            };
-
-            populateDynamicList('extra-costs', template.extraCosts);
-            populateDynamicList('discounts', template.discounts);
-        }
-
-        function setupTemplateAutocomplete() {
-            const inp = document.getElementById('contract-name');
-            let currentFocus;
-
-            const closeAllLists = (elmnt) => {
-                const x = document.getElementsByClassName("autocomplete-items");
-                for (let item of x) {
-                    if (elmnt != item && elmnt != inp) {
-                        item.parentNode.removeChild(item);
-                    }
-                }
-            };
-            
-            inp.addEventListener("input", function() {
-                let a, b, val = this.value;
-                closeAllLists();
-                if (!val || customTemplates.length === 0) { return false; }
-                currentFocus = -1;
-                a = document.createElement("DIV");
-                a.setAttribute("id", this.id + "autocomplete-list");
-                a.setAttribute("class", "autocomplete-items");
-                this.parentNode.appendChild(a);
-
-                for (let i = 0; i < customTemplates.length; i++) {
-                    if (customTemplates[i].name.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                        b = document.createElement("DIV");
-                        b.innerHTML = `<strong>${customTemplates[i].name.substr(0, val.length)}</strong>${customTemplates[i].name.substr(val.length)}`;
-                        b.dataset.templateIndex = i;
-                        b.addEventListener("click", function() {
-                            const selectedTemplate = customTemplates[this.dataset.templateIndex];
-                            applyTemplate(selectedTemplate);
-                            closeAllLists();
-                        });
-                        a.appendChild(b);
-                    }
-                }
-            });
-
-            inp.addEventListener("keydown", function(e) {
-                let x = document.getElementById(this.id + "autocomplete-list");
-                if (x) x = x.getElementsByTagName("div");
-                if (e.keyCode == 40) { // Down
-                    currentFocus++;
-                    addActive(x);
-                } else if (e.keyCode == 38) { // Up
-                    currentFocus--;
-                    addActive(x);
-                } else if (e.keyCode == 13) { // Enter
-                    e.preventDefault();
-                    if (currentFocus > -1 && x) x[currentFocus].click();
-                }
-            });
-
-            function addActive(x) {
-                if (!x) return;
-                removeActive(x);
-                if (currentFocus >= x.length) currentFocus = 0;
-                if (currentFocus < 0) currentFocus = (x.length - 1);
-                x[currentFocus].classList.add("autocomplete-active");
+                // Debug: Check ModuleRegistry before use
+                console.log('   - Checking ModuleRegistry before use:');
+                console.log('   - typeof ModuleRegistry:', typeof ModuleRegistry);
+                console.log('   - ModuleRegistry.register:', typeof ModuleRegistry.register);
+                console.log('   - typeof PrinterApp.moduleRegistry:', typeof PrinterApp.moduleRegistry);
+                console.log('   - PrinterApp.moduleRegistry.register:', typeof PrinterApp.moduleRegistry.register);
+                
+                const translationManager = new TranslationManager();
+                console.log('   ✓ TranslationManager instance created');
+                
+                // Use the namespace reference to avoid scoping issues
+                PrinterApp.moduleRegistry.register('TranslationManager', {
+                    version: '1.0.0',
+                    description: 'Handles internationalization and language switching',
+                    instance: translationManager,
+                    dependencies: []
+                });
+                console.log('   ✓ TranslationManager registered successfully');
+            } catch (error) {
+                console.error('   ✗ TranslationManager registration failed:', error.message, error.stack);
+                throw new Error('TranslationManager registration failed: ' + error.message);
             }
 
-            function removeActive(x) {
-                for (let item of x) item.classList.remove("autocomplete-active");
+            try {
+                console.log('2. Registering PrinterDatabase...');
+                const printerDatabase = new PrinterDatabase();
+                console.log('   ✓ PrinterDatabase instance created');
+                PrinterApp.moduleRegistry.register('PrinterDatabase', {
+                    version: '1.0.0',
+                    description: 'Manages printer manufacturer and model data',
+                    instance: printerDatabase,
+                    dependencies: []
+                });
+                console.log('   ✓ PrinterDatabase registered successfully');
+            } catch (error) {
+                console.error('   ✗ PrinterDatabase registration failed:', error.message, error.stack);
+                throw new Error('PrinterDatabase registration failed: ' + error.message);
             }
-            
-            document.addEventListener("click", (e) => closeAllLists(e.target));
-        }
 
-        function setupGenericAutocomplete(inp, dataArray) {
-             let currentFocus;
+            try {
+                console.log('3. Registering AutocompleteManager...');
+                const autocompleteManager = new AutocompleteManager();
+                console.log('   ✓ AutocompleteManager instance created');
+                PrinterApp.moduleRegistry.register('AutocompleteManager', {
+                    version: '1.0.0',
+                    description: 'Handles autocomplete functionality for form fields',
+                    instance: autocompleteManager,
+                    dependencies: ['PrinterDatabase']
+                });
+                console.log('   ✓ AutocompleteManager registered successfully');
+            } catch (error) {
+                console.error('   ✗ AutocompleteManager registration failed:', error.message, error.stack);
+                throw new Error('AutocompleteManager registration failed: ' + error.message);
+            }
 
-            const closeAllLists = (elmnt) => {
-                const x = document.getElementsByClassName("autocomplete-items");
-                for (let item of x) {
-                    if (elmnt != item && elmnt != inp) {
-                        item.parentNode.removeChild(item);
+            try {
+                console.log('4. Registering TemplateManager...');
+                const templateManager = new TemplateManager();
+                console.log('   ✓ TemplateManager instance created');
+                PrinterApp.moduleRegistry.register('TemplateManager', {
+                    version: '1.0.0',
+                    description: 'Manages template loading, saving, and CSV operations',
+                    instance: templateManager,
+                    dependencies: ['PrinterDatabase', 'AutocompleteManager']
+                });
+                console.log('   ✓ TemplateManager registered successfully');
+            } catch (error) {
+                console.error('   ✗ TemplateManager registration failed:', error.message, error.stack);
+                throw new Error('TemplateManager registration failed: ' + error.message);
+            }
+
+            try {
+                console.log('5. Registering FormManager...');
+                const formManager = new FormManager();
+                console.log('   ✓ FormManager instance created');
+                PrinterApp.moduleRegistry.register('FormManager', {
+                    version: '1.0.0',
+                    description: 'Handles form interactions, validation, and file operations',
+                    instance: formManager,
+                    dependencies: ['TranslationManager', 'TemplateManager']
+                });
+                console.log('   ✓ FormManager registered successfully');
+            } catch (error) {
+                console.error('   ✗ FormManager registration failed:', error.message, error.stack);
+                throw new Error('FormManager registration failed: ' + error.message);
+            }
+
+            try {
+                console.log('6. Registering DebugPanel...');
+                const debugPanel = new DebugPanel();
+                console.log('   ✓ DebugPanel instance created');
+                PrinterApp.moduleRegistry.register('DebugPanel', {
+                    version: '1.0.0',
+                    description: 'Provides debug panel for system introspection',
+                    instance: debugPanel,
+                    dependencies: []
+                });
+                console.log('   ✓ DebugPanel registered successfully');
+            } catch (error) {
+                console.error('   ✗ DebugPanel registration failed:', error.message, error.stack);
+                throw new Error('DebugPanel registration failed: ' + error.message);
+            }
+
+            // Initialize all modules in dependency order
+            console.log('=== Module Initialization Phase ===');
+            try {
+                console.log('Starting module initialization...');
+                await PrinterApp.moduleRegistry.initializeAll();
+                console.log('✓ All modules initialized successfully!');
+            } catch (error) {
+                console.error('✗ Module initialization failed:', error.message, error.stack);
+                throw new Error('Module initialization failed: ' + error.message);
+            }
+
+            // Set up global error handling
+            window.addEventListener('error', (event) => {
+                AppLogger.error('Global', 'Unhandled JavaScript error', {
+                    message: event.message,
+                    filename: event.filename,
+                    line: event.lineno,
+                    column: event.colno,
+                    stack: event.error?.stack
+                });
+            });
+
+            window.addEventListener('unhandledrejection', (event) => {
+                AppLogger.error('Global', 'Unhandled promise rejection', {
+                    reason: event.reason,
+                    promise: event.promise
+                });
+            });
+
+            AppLogger.info('App', 'Application initialized successfully');
+
+            // Quick fix: Set up basic autocomplete manually if modules failed
+            setTimeout(() => {
+                try {
+                    console.log('Setting up fallback autocomplete...');
+                    
+                    // Set up manufacturer autocomplete
+                    const manufacturerInput = document.getElementById('manufacturer');
+                    if (manufacturerInput) {
+                        const manufacturers = ['Canon', 'Toshiba', 'Ricoh', 'Konica Minolta', 'Koesio (Kyocera)', 'Sharp', 'Xerox', 'HP', 'Epson'];
+                        setupSimpleAutocomplete(manufacturerInput, manufacturers);
+                        console.log('Manufacturer autocomplete set up');
                     }
-                }
-            };
-            
-            inp.addEventListener("input", function() {
-                let a, b, i, val = this.value;
-                closeAllLists();
-                if (!val) { return false; }
-                currentFocus = -1;
-                a = document.createElement("DIV");
-                a.setAttribute("id", this.id + "autocomplete-list");
-                a.setAttribute("class", "autocomplete-items");
-                this.parentNode.appendChild(a);
-                for (i = 0; i < dataArray.length; i++) {
-                    if (dataArray[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                        b = document.createElement("DIV");
-                        b.innerHTML = "<strong>" + dataArray[i].substr(0, val.length) + "</strong>";
-                        b.innerHTML += dataArray[i].substr(val.length);
-                        b.innerHTML += "<input type='hidden' value='" + dataArray[i] + "'>";
-                        b.addEventListener("click", function(e) {
-                            inp.value = this.getElementsByTagName("input")[0].value;
-                            closeAllLists();
-                            if(inp.id === 'manufacturer') {
-                                handleManufacturerChange(inp.value);
+
+                    // Ensure placeholders are set
+                    const translationManager = PrinterApp.moduleRegistry.getModule('TranslationManager');
+                    if (translationManager) {
+                        console.log('TranslationManager initialized:', translationManager.initialized);
+                        console.log('Available languages:', translationManager.getSupportedLanguages());
+                        console.log('Current language:', translationManager.getCurrentLanguage());
+                        
+                        // Check if the translation manager is initialized
+                        if (!translationManager.initialized) {
+                            console.log('TranslationManager not initialized yet, calling init()...');
+                            translationManager.init().then(() => {
+                                translationManager.setLanguage('en');
+                                console.log('Language set to English');
+                            }).catch(error => {
+                                console.error('Failed to initialize TranslationManager:', error);
+                            });
+                        } else {
+                            try {
+                                translationManager.setLanguage('en');
+                                console.log('Language set to English');
+                            } catch (error) {
+                                console.error('Failed to set language:', error);
+                                console.log('Available translations keys:', Object.keys(translationManager.translations));
                             }
+                        }
+                    }
+                    
+                    // Set up language switchers
+                    const langFr = document.getElementById('lang-fr');
+                    const langEn = document.getElementById('lang-en');
+                    
+                    if (langFr && translationManager) {
+                        langFr.addEventListener('click', () => {
+                            translationManager.setLanguage('fr');
+                            console.log('Language switched to French');
                         });
-                        a.appendChild(b);
                     }
-                }
-            });
-            inp.addEventListener("keydown", function(e) {
-                let x = document.getElementById(this.id + "autocomplete-list");
-                if (x) x = x.getElementsByTagName("div");
-                if (e.keyCode == 40) { // down
-                    currentFocus++;
-                    addActive(x);
-                } else if (e.keyCode == 38) { // up
-                    currentFocus--;
-                    addActive(x);
-                } else if (e.keyCode == 13) { // enter
-                    e.preventDefault();
-                    if (currentFocus > -1) {
-                        if (x) x[currentFocus].click();
+                    if (langEn && translationManager) {
+                        langEn.addEventListener('click', () => {
+                            translationManager.setLanguage('en');
+                            console.log('Language switched to English');
+                        });
                     }
+                    
+                    console.log('Language switchers set up');
+                    // Set up dynamic list buttons
+                    const addExtraCostBtn = document.getElementById('add-extra-cost');
+                    const addDiscountBtn = document.getElementById('add-discount');
+                    
+                    if (addExtraCostBtn) {
+                        addExtraCostBtn.addEventListener('click', () => createDynamicRow('extra-costs'));
+                    }
+                    if (addDiscountBtn) {
+                        addDiscountBtn.addEventListener('click', () => createDynamicRow('discounts'));
+                    }
+                    
+                    console.log('Dynamic list buttons set up');
+                } catch (error) {
+                    console.error('Fallback setup failed:', error);
                 }
-            });
-            function addActive(x) {
-                if (!x) return false;
-                removeActive(x);
-                if (currentFocus >= x.length) currentFocus = 0;
-                if (currentFocus < 0) currentFocus = (x.length - 1);
-                x[currentFocus].classList.add("autocomplete-active");
-            }
-            function removeActive(x) {
-                for (let i = 0; i < x.length; i++) {
-                    x[i].classList.remove("autocomplete-active");
-                }
-            }
-        }
-        
-        function handleManufacturerChange(manufacturerName) {
-            const data = printerInfoData[manufacturerName];
-            if(data) {
-                document.getElementById('maintenance').value = data.characteristics.maintenance;
-                document.getElementById('reliability').value = data.characteristics.reliability;
-                document.getElementById('support').value = data.characteristics.support;
-                document.getElementById('easeOfUse').value = data.characteristics.easeOfUse;
-                document.getElementById('repairability').value = data.characteristics.repairability;
-                setupGenericAutocomplete(document.getElementById('model'), data.models);
-            }
-        }
+            }, 1000);
 
-        setupGenericAutocomplete(document.getElementById('manufacturer'), Object.keys(printerInfoData));
+            // Dynamic row creation function
+            function createDynamicRow(type) {
+                const list = document.getElementById(`${type}-list`);
+                const item = document.createElement('div');
+                item.classList.add('dynamic-list-item');
+                item.innerHTML = `
+                    <input type="text" class="${type}-desc" placeholder="Description">
+                    <input type="number" step="0.01" class="${type}-amount" placeholder="Amount (€)">
+                    <select class="${type}-freq">
+                        <option value="one-time">One-Time</option>
+                        <option value="monthly" selected>Monthly</option>
+                        <option value="quarterly">Quarterly</option>
+                        <option value="yearly">Yearly</option>
+                    </select>
+                    <button type="button" class="remove-btn" onclick="this.parentElement.remove()">×</button>
+                `;
+                list.appendChild(item);
+                return item;
+            }
 
-
-        // --- SAVE FUNCTIONALITY ---
-        document.getElementById('save-btn').addEventListener('click', () => {
-            const getDynamicListData = (type) => {
-                const items = [];
-                document.querySelectorAll(`#${type}-list .dynamic-list-item`).forEach(item => {
-                    const description = item.querySelector(`.${type}-desc`).value;
-                    const amount = parseFloat(item.querySelector(`.${type}-amount`).value);
-                    const frequency = item.querySelector(`.${type}-freq`).value;
-                    if (description && !isNaN(amount)) {
-                        items.push({ description, amount, frequency });
+            // Simple autocomplete function
+            function setupSimpleAutocomplete(input, dataArray) {
+                input.addEventListener('input', function() {
+                    const val = this.value;
+                    
+                    // Remove existing dropdown
+                    const existing = input.parentNode.querySelector('.autocomplete-items');
+                    if (existing) existing.remove();
+                    
+                    if (!val) return;
+                    
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'autocomplete-items';
+                    dropdown.style.cssText = 'position: absolute; border: 1px solid #d4d4d4; border-top: none; z-index: 99; top: 100%; left: 0; right: 0; max-height: 200px; overflow-y: auto; background-color: #fff;';
+                    
+                    dataArray.forEach(item => {
+                        if (item.toLowerCase().includes(val.toLowerCase())) {
+                            const itemDiv = document.createElement('div');
+                            itemDiv.style.cssText = 'padding: 10px; cursor: pointer; border-bottom: 1px solid #d4d4d4;';
+                            itemDiv.textContent = item;
+                            itemDiv.addEventListener('click', () => {
+                                input.value = item;
+                                dropdown.remove();
+                                
+                                // Handle manufacturer selection
+                                if (input.id === 'manufacturer') {
+                                    const printerData = {
+                                        "Canon": { maintenance: 85, reliability: 90, support: 88, easeOfUse: 87, repairability: 80 },
+                                        "Toshiba": { maintenance: 85, reliability: 88, support: 80, easeOfUse: 87, repairability: 80 },
+                                        "Ricoh": { maintenance: 82, reliability: 88, support: 80, easeOfUse: 89, repairability: 78 },
+                                        "Konica Minolta": { maintenance: 80, reliability: 90, support: 82, easeOfUse: 85, repairability: 75 },
+                                        "Koesio (Kyocera)": { maintenance: 85, reliability: 92, support: 85, easeOfUse: 85, repairability: 88 },
+                                        "Sharp": { maintenance: 70, reliability: 75, support: 60, easeOfUse: 80, repairability: 65 },
+                                        "Xerox": { maintenance: 65, reliability: 70, support: 55, easeOfUse: 85, repairability: 60 },
+                                        "HP": { maintenance: 75, reliability: 80, support: 70, easeOfUse: 85, repairability: 70 },
+                                        "Epson": { maintenance: 88, reliability: 90, support: 85, easeOfUse: 87, repairability: 85 }
+                                    };
+                                    
+                                    const data = printerData[item];
+                                    if (data) {
+                                        document.getElementById('maintenance').value = data.maintenance;
+                                        document.getElementById('reliability').value = data.reliability;
+                                        document.getElementById('support').value = data.support;
+                                        document.getElementById('easeOfUse').value = data.easeOfUse;
+                                        document.getElementById('repairability').value = data.repairability;
+                                    }
+                                }
+                            });
+                            dropdown.appendChild(itemDiv);
+                        }
+                    });
+                    
+                    if (dropdown.children.length > 0) {
+                        input.parentNode.style.position = 'relative';
+                        input.parentNode.appendChild(dropdown);
                     }
                 });
-                return items;
-            };
+            }
 
-            const contractData = {
-                id: `contract-${crypto.randomUUID()}`,
-                name: document.getElementById('contract-name').value,
-                provider: document.getElementById('provider').value,
-                printerInfo: {
-                    manufacturer: document.getElementById('manufacturer').value,
-                    model: document.getElementById('model').value,
-                    maintenance: parseInt(document.getElementById('maintenance').value) || 0,
-                    reliability: parseInt(document.getElementById('reliability').value) || 0,
-                    support: parseInt(document.getElementById('support').value) || 0,
-                    easeOfUse: parseInt(document.getElementById('easeOfUse').value) || 0,
-                    repairability: parseInt(document.getElementById('repairability').value) || 0,
-                },
-                baseMonthlyCost: parseFloat(document.getElementById('base-cost').value) || 0,
-                contractDurationMonths: parseInt(document.getElementById('duration').value) || 0,
-                includedPagesMonochrome: parseInt(document.getElementById('mono-included').value) || 0,
-                costPerPageMonochromeOverrun: parseFloat(document.getElementById('mono-overrun').value) || 0,
-                includedPagesColor: parseInt(document.getElementById('color-included').value) || 0,
-                costPerPageColorOverrun: parseFloat(document.getElementById('color-overrun').value) || 0,
-                setupFee: parseFloat(document.getElementById('setup-fee').value) || 0,
-                deliveryFee: parseFloat(document.getElementById('delivery-fee').value) || 0,
-                extraCosts: getDynamicListData('extra-costs'),
-                discounts: getDynamicListData('discounts')
-            };
-
-            const dataStr = JSON.stringify(contractData, null, 4);
-            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-            const exportFileDefaultName = `${contractData.name.replace(/[^a-z0-9]/gi, '_') || 'contract'}.json`;
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', exportFileDefaultName);
-            linkElement.click();
-        });
-
-        // --- IMPORT FUNCTIONALITY ---
-        document.getElementById('import-file').addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    
-                    document.getElementById('contract-name').value = data.name || '';
-                    document.getElementById('provider').value = data.provider || '';
-                    if(data.printerInfo) {
-                        document.getElementById('manufacturer').value = data.printerInfo.manufacturer || '';
-                        document.getElementById('model').value = data.printerInfo.model || '';
-                        document.getElementById('maintenance').value = data.printerInfo.maintenance || '';
-                        document.getElementById('reliability').value = data.printerInfo.reliability || '';
-                        document.getElementById('support').value = data.printerInfo.support || '';
-                        document.getElementById('easeOfUse').value = data.printerInfo.easeOfUse || '';
-                        document.getElementById('repairability').value = data.printerInfo.repairability || '';
-                    }
-                    document.getElementById('base-cost').value = data.baseMonthlyCost || '';
-                    document.getElementById('duration').value = data.contractDurationMonths || '';
-                    document.getElementById('mono-included').value = data.includedPagesMonochrome || '';
-                    document.getElementById('mono-overrun').value = data.costPerPageMonochromeOverrun || '';
-                    document.getElementById('color-included').value = data.includedPagesColor || '';
-                    document.getElementById('color-overrun').value = data.costPerPageColorOverrun || '';
-                    document.getElementById('setup-fee').value = data.setupFee || '';
-                    document.getElementById('delivery-fee').value = data.deliveryFee || '';
-
-                    const populateDynamicList = (type, dataList) => {
-                        const listContainer = document.getElementById(`${type}-list`);
-                        listContainer.innerHTML = '';
-                        if (dataList && Array.isArray(dataList)) {
-                            dataList.forEach(dataItem => {
-                                const row = createDynamicRow(type);
-                                row.querySelector(`.${type}-desc`).value = dataItem.description || '';
-                                row.querySelector(`.${type}-amount`).value = dataItem.amount || '';
-                                row.querySelector(`.${type}-freq`).value = dataItem.frequency || 'monthly';
-                            });
-                        }
-                    };
-                    
-                    populateDynamicList('extra-costs', data.extraCosts);
-                    populateDynamicList('discounts', data.discounts);
-
-                } catch (error) {
-                    alert('Error: Could not parse the JSON file.');
-                    console.error("Error parsing JSON:", error);
+            // ...existing error handling code...
+        } catch (error) {
+            console.error('=== CRITICAL APPLICATION INITIALIZATION ERROR ===');
+            console.error('Error Type:', error.constructor.name);
+            console.error('Error Message:', error.message);
+            console.error('Error Stack:', error.stack);
+            console.error('Error occurred at:', new Date().toISOString());
+            
+            // Try to log to AppLogger if it exists
+            try {
+                if (typeof AppLogger !== 'undefined' && AppLogger) {
+                    AppLogger.error('App', 'Failed to initialize application', {
+                        errorType: error.constructor.name,
+                        errorMessage: error.message,
+                        errorStack: error.stack,
+                        timestamp: new Date().toISOString()
+                    });
                 }
-            };
-            reader.readAsText(file);
-        });
-        
-        // Set initial language
-        setLanguage(currentLanguage);
-        setupTemplateAutocomplete();
+            } catch (logError) {
+                console.error('Failed to log to AppLogger:', logError.message);
+            }
+            
+            // Additional debugging information
+            console.error('=== DEBUG INFORMATION ===');
+            console.error('Document ready state:', document.readyState);
+            console.error('Window loaded:', window.document.readyState === 'complete');
+            console.error('AppLogger available:', typeof AppLogger);
+            console.error('ModuleRegistry available:', typeof ModuleRegistry);
+            
+            // Check which modules are available
+            const moduleClasses = [
+                'Logger', 'ModuleRegistry', 'TranslationManager', 
+                'PrinterDatabase', 'AutocompleteManager', 'TemplateManager', 
+                'FormManager', 'DebugPanel'
+            ];
+            
+            console.error('=== MODULE AVAILABILITY CHECK ===');
+            moduleClasses.forEach(className => {
+                console.error(`${className}:`, typeof window[className]);
+            });
+            
+            // Check if ModuleRegistry has any registered modules
+            try {
+                if (typeof PrinterApp !== 'undefined' && PrinterApp.moduleRegistry && PrinterApp.moduleRegistry.getRegisteredModules) {
+                    const registeredModules = PrinterApp.moduleRegistry.getRegisteredModules();
+                    console.error('Registered modules:', Object.keys(registeredModules));
+                }
+            } catch (regError) {
+                console.error('Failed to check registered modules:', regError.message);
+            }
+            
+            // Show detailed error message to user
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = 'position: fixed; top: 10px; left: 50%; transform: translateX(-50%); background: #dc3545; color: white; padding: 15px 25px; border-radius: 8px; z-index: 9999; font-family: Arial, sans-serif; max-width: 80%; box-shadow: 0 4px 12px rgba(0,0,0,0.3);';
+            errorDiv.innerHTML = `
+                <strong>Application Initialization Failed</strong><br>
+                <small>Error: ${error.message}</small><br>
+                <small>Type: ${error.constructor.name}</small><br>
+                <small style="margin-top: 10px; display: block;">
+                    Please open browser console (F12) for detailed debugging information.
+                    <br>Check that all JavaScript modules loaded properly.
+                </small>
+            `;
+            document.body.appendChild(errorDiv);
+            
+            // Auto-remove error message after 10 seconds
+            setTimeout(() => {
+                if (errorDiv.parentNode) {
+                    errorDiv.parentNode.removeChild(errorDiv);
+                }
+            }, 10000);
+        }
     });
     </script>
 </body>

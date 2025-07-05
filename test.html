@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JS Module Test</title>
+</head>
+<body>
+    <h1>JavaScript Module Test</h1>
+    <div id="test-results"></div>
+    
+    <script src="js/logger.js"></script>
+    <script src="js/module-registry.js"></script>
+    <script src="js/translation-manager.js"></script>
+    <script src="js/printer-database.js"></script>
+    <script src="js/autocomplete-manager.js"></script>
+    <script src="js/template-manager.js"></script>
+    <script src="js/form-manager.js"></script>
+    <script src="js/debug-panel.js"></script>
+    
+    <script>
+        const testDiv = document.getElementById('test-results');
+        
+        function addResult(test, success, error = null) {
+            const div = document.createElement('div');
+            div.style.color = success ? 'green' : 'red';
+            div.innerHTML = success ? `✓ ${test}` : `✗ ${test}: ${error}`;
+            testDiv.appendChild(div);
+        }
+        
+        // Test if all classes are defined
+        try {
+            const logger = new Logger();
+            addResult('Logger class instantiation', true);
+        } catch (e) {
+            addResult('Logger class instantiation', false, e.message);
+        }
+        
+        try {
+            const registry = new ModuleRegistry();
+            addResult('ModuleRegistry class instantiation', true);
+        } catch (e) {
+            addResult('ModuleRegistry class instantiation', false, e.message);
+        }
+        
+        try {
+            const translation = new TranslationManager();
+            addResult('TranslationManager class instantiation', true);
+        } catch (e) {
+            addResult('TranslationManager class instantiation', false, e.message);
+        }
+        
+        try {
+            const printer = new PrinterDatabase();
+            addResult('PrinterDatabase class instantiation', true);
+        } catch (e) {
+            addResult('PrinterDatabase class instantiation', false, e.message);
+        }
+        
+        try {
+            const autocomplete = new AutocompleteManager();
+            addResult('AutocompleteManager class instantiation', true);
+        } catch (e) {
+            addResult('AutocompleteManager class instantiation', false, e.message);
+        }
+        
+        try {
+            const template = new TemplateManager();
+            addResult('TemplateManager class instantiation', true);
+        } catch (e) {
+            addResult('TemplateManager class instantiation', false, e.message);
+        }
+        
+        try {
+            const form = new FormManager();
+            addResult('FormManager class instantiation', true);
+        } catch (e) {
+            addResult('FormManager class instantiation', false, e.message);
+        }
+        
+        try {
+            const debug = new DebugPanel();
+            addResult('DebugPanel class instantiation', true);
+        } catch (e) {
+            addResult('DebugPanel class instantiation', false, e.message);
+        }
+        
+        // Test globals
+        if (typeof AppLogger !== 'undefined') {
+            addResult('AppLogger global defined', true);
+        } else {
+            addResult('AppLogger global defined', false, 'AppLogger is not defined');
+        }
+        
+        if (typeof ModuleRegistry !== 'undefined') {
+            addResult('ModuleRegistry global defined', true);
+        } else {
+            addResult('ModuleRegistry global defined', false, 'ModuleRegistry global is not defined');
+        }
+    </script>
+</body>
+</html>
