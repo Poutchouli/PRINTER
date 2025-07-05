@@ -21,7 +21,7 @@ class TranslationManager {
             this.translations = {
                 en: {
                     title: '🖨️ Printer Leasing Contract Tool',
-                    templates: 'Contract Templates',
+                    templates: 'Contract Templates & Import',
                     importTemplatesBtn: '📂 Import Templates (CSV)',
                     downloadTemplateBtn: '📥 Download Template',
                     generalInfo: 'General Information',
@@ -75,7 +75,7 @@ class TranslationManager {
                 },
                 fr: {
                     title: '🖨️ Outil de Contrat de Location d\'Imprimante',
-                    templates: 'Modèles de Contrat',
+                    templates: 'Modèles de Contrat et Import',
                     importTemplatesBtn: '📂 Importer des Modèles (CSV)',
                     downloadTemplateBtn: '📥 Télécharger le Modèle',
                     generalInfo: 'Informations Générales',
