@@ -1,0 +1,48 @@
+{
+  "contractName": "Lexmark ColorLaser Pro",
+  "provider": "Lexmark Partner Network",
+  "duration": 48,
+  "manufacturer": "Lexmark",
+  "model": "CS521dn",
+  "maintenance": 82,
+  "reliability": 86,
+  "support": 79,
+  "easeOfUse": 83,
+  "repairability": 77,
+  "baseCost": 78.99,
+  "setupFee": 125.00,
+  "deliveryFee": 65.00,
+  "monoIncluded": 6000,
+  "monoOverrun": 0.006,
+  "colorIncluded": 2000,
+  "colorOverrun": 0.038,
+  "extraCosts": [
+    {
+      "description": "Extended warranty",
+      "amount": 25.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Consumables management",
+      "amount": 45.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Annual calibration",
+      "amount": 200.00,
+      "frequency": "yearly"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "4-year commitment bonus",
+      "amount": 15.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Early bird signup",
+      "amount": 100.00,
+      "frequency": "one-time"
+    }
+  ]
+}

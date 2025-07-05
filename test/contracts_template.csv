@@ -1,0 +1,4 @@
+contractName,provider,duration,manufacturer,model,maintenance,reliability,support,easeOfUse,repairability,baseCost,setupFee,deliveryFee,monoIncluded,monoOverrun,colorIncluded,colorOverrun
+"Sharp MX Basic Contract","Sharp Business Europe",36,"Sharp","MX-3071",70,75,60,80,65,58.99,110.00,55.00,6500,0.010,1800,0.050
+"Toshiba e-STUDIO Pro","Toshiba Business Solutions",48,"Toshiba","e-STUDIO2829A",85,88,80,87,80,72.50,130.00,65.00,7000,0.007,2200,0.043
+"Konica Minolta Bizhub","Konica Minolta Business",60,"Konica Minolta","bizhub C308",80,90,82,85,75,98.75,180.00,75.00,5500,0.008,1600,0.046

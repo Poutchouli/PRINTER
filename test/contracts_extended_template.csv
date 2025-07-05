@@ -1,0 +1,13 @@
+contractName,provider,duration,manufacturer,model,maintenance,reliability,support,easeOfUse,repairability,baseCost,setupFee,deliveryFee,monoIncluded,monoOverrun,colorIncluded,colorOverrun
+"Sharp MX Basic Contract","Sharp Business Europe",36,"Sharp","MX-3071",70,75,60,80,65,58.99,110.00,55.00,6500,0.010,1800,0.050
+"Toshiba e-STUDIO Pro","Toshiba Business Solutions",48,"Toshiba","e-STUDIO2829A",85,88,80,87,80,72.50,130.00,65.00,7000,0.007,2200,0.043
+"Konica Minolta Bizhub","Konica Minolta Business",60,"Konica Minolta","bizhub C308",80,90,82,85,75,98.75,180.00,75.00,5500,0.008,1600,0.046
+"Budget Office Solution","CheapPrint Co",12,"Generic","OfficeJet-200",45,55,35,75,60,29.99,25.00,15.00,1500,0.015,500,0.080
+"Premium Color Workstation","ElitePrint Services",36,"Fuji Xerox","ApeosPort C2060",95,92,90,88,85,185.00,250.00,100.00,8000,0.004,3000,0.028
+"Mono Only High Speed","MonoPrint Specialists",24,"Lexmark","MS810dn",70,85,65,90,75,45.00,75.00,40.00,10000,0.005,0,0.000
+"Multi-Function Color","AllInOne Solutions",48,"Brother","MFC-L8900CDW",75,80,70,85,78,89.99,150.00,60.00,4500,0.009,1200,0.055
+"Small Office Starter","StartupPrint",18,"Epson","WorkForce Pro WF-3720",65,70,60,88,70,55.50,80.00,35.00,2500,0.012,800,0.065
+"Enterprise Fleet Unit","MegaCorp Print",60,"HP","LaserJet Enterprise M608dn",88,95,85,82,80,125.00,200.00,85.00,12000,0.003,0,0.000
+"Evaluation Test Unit","TestPrint Ltd",3,"TestBrand","EvalUnit-X1",50,60,40,70,55,0.00,0.00,0.00,200,0.100,50,0.200
+"Short Term Emergency","RushPrint Services",1,"Canon","PIXMA TS8320",40,50,30,90,65,150.00,50.00,25.00,300,0.050,200,0.120
+"Zero Setup Special","FreeSetup Co",24,"Samsung","Xpress SL-M2020W",60,65,55,85,70,39.99,0.00,30.00,3000,0.008,0,0.000

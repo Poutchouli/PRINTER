@@ -1,0 +1,38 @@
+{
+  "contractName": "Short-Term Rental",
+  "provider": "QuickPrint Rentals",
+  "duration": 6,
+  "manufacturer": "Epson",
+  "model": "WorkForce Pro WF-4730",
+  "maintenance": 60,
+  "reliability": 75,
+  "support": 65,
+  "easeOfUse": 88,
+  "repairability": 70,
+  "baseCost": 120.00,
+  "setupFee": 100.00,
+  "deliveryFee": 50.00,
+  "monoIncluded": 1000,
+  "monoOverrun": 0.012,
+  "colorIncluded": 500,
+  "colorOverrun": 0.055,
+  "extraCosts": [
+    {
+      "description": "Rush delivery",
+      "amount": 75.00,
+      "frequency": "one-time"
+    },
+    {
+      "description": "Weekly maintenance check",
+      "amount": 40.00,
+      "frequency": "monthly"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "First-time customer discount",
+      "amount": 20.00,
+      "frequency": "monthly"
+    }
+  ]
+}

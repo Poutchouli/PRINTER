@@ -1,0 +1,33 @@
+{
+  "contractName": "Zero Cost Evaluation Unit",
+  "provider": "Evaluation Partners",
+  "duration": 3,
+  "manufacturer": "Generic",
+  "model": "TestUnit-1000",
+  "maintenance": 50,
+  "reliability": 60,
+  "support": 40,
+  "easeOfUse": 70,
+  "repairability": 55,
+  "baseCost": 0.00,
+  "setupFee": 0.00,
+  "deliveryFee": 0.00,
+  "monoIncluded": 500,
+  "monoOverrun": 0.050,
+  "colorIncluded": 100,
+  "colorOverrun": 0.150,
+  "extraCosts": [
+    {
+      "description": "Return shipping",
+      "amount": 50.00,
+      "frequency": "one-time"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "Evaluation program credit",
+      "amount": 50.00,
+      "frequency": "one-time"
+    }
+  ]
+}

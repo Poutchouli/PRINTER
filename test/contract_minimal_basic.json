@@ -1,0 +1,21 @@
+{
+  "contractName": "Basic Mono Printer",
+  "provider": "OfficeMax",
+  "duration": 12,
+  "manufacturer": "Brother",
+  "model": "HL-L2350DW",
+  "maintenance": 70,
+  "reliability": 85,
+  "support": 60,
+  "easeOfUse": 90,
+  "repairability": 75,
+  "baseCost": 35.00,
+  "setupFee": 0.00,
+  "deliveryFee": 25.00,
+  "monoIncluded": 2000,
+  "monoOverrun": 0.005,
+  "colorIncluded": 0,
+  "colorOverrun": 0.000,
+  "extraCosts": [],
+  "discounts": []
+}

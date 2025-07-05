@@ -1,0 +1,38 @@
+{
+  "contractName": "Canon Office Pro Contract",
+  "provider": "Canon Business Solutions",
+  "duration": 36,
+  "manufacturer": "Canon",
+  "model": "imageRUNNER ADVANCE C3520i",
+  "maintenance": 85,
+  "reliability": 90,
+  "support": 88,
+  "easeOfUse": 87,
+  "repairability": 80,
+  "baseCost": 89.99,
+  "setupFee": 150.00,
+  "deliveryFee": 75.00,
+  "monoIncluded": 5000,
+  "monoOverrun": 0.008,
+  "colorIncluded": 1500,
+  "colorOverrun": 0.045,
+  "extraCosts": [
+    {
+      "description": "Paper tray upgrade",
+      "amount": 25.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Finisher unit rental",
+      "amount": 180.00,
+      "frequency": "one-time"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "3-year commitment discount",
+      "amount": 10.00,
+      "frequency": "monthly"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "contractName": "Samsung Simple Lease",
+  "provider": "TechRent Solutions",
+  "duration": 24,
+  "manufacturer": "Samsung",
+  "model": "Xpress M2835DW",
+  "maintenance": 75,
+  "reliability": 80,
+  "support": 70,
+  "easeOfUse": 85,
+  "repairability": 78,
+  "baseCost": 65.50,
+  "setupFee": 50.00,
+  "deliveryFee": 35.00,
+  "monoIncluded": 3500,
+  "monoOverrun": 0.007,
+  "colorIncluded": 0,
+  "colorOverrun": 0.000,
+  "extraCosts": [],
+  "discounts": []
+}

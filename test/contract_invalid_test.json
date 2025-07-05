@@ -1,0 +1,24 @@
+{
+  "contractName": "Malformed Test Contract",
+  "provider": "Test Provider",
+  "duration": "invalid_duration",
+  "manufacturer": "TestBrand",
+  "model": "Test Model",
+  "maintenance": "not_a_number",
+  "reliability": 105,
+  "support": -10,
+  "easeOfUse": null,
+  "repairability": "",
+  "baseCost": "free",
+  "setupFee": true,
+  "deliveryFee": [],
+  "monoIncluded": "unlimited",
+  "monoOverrun": "zero",
+  "colorIncluded": {},
+  "colorOverrun": -0.005,
+  "extraCosts": "none",
+  "discounts": {
+    "invalid": "structure"
+  },
+  "unknownField": "This field shouldn't exist"
+}

@@ -1,0 +1,48 @@
+{
+  "contractName": "Extreme High Numbers Test",
+  "provider": "BigNumbers Corp",
+  "duration": 120,
+  "manufacturer": "MegaPrint",
+  "model": "UltraVolume-9999",
+  "maintenance": 99,
+  "reliability": 99,
+  "support": 99,
+  "easeOfUse": 99,
+  "repairability": 99,
+  "baseCost": 999.99,
+  "setupFee": 9999.99,
+  "deliveryFee": 999.00,
+  "monoIncluded": 999999,
+  "monoOverrun": 0.001,
+  "colorIncluded": 500000,
+  "colorOverrun": 0.001,
+  "extraCosts": [
+    {
+      "description": "Premium everything package",
+      "amount": 999.99,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Platinum service tier",
+      "amount": 9999.99,
+      "frequency": "yearly"
+    },
+    {
+      "description": "Mega installation",
+      "amount": 99999.99,
+      "frequency": "one-time"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "Volume commitment discount",
+      "amount": 499.99,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Long-term loyalty bonus",
+      "amount": 999.99,
+      "frequency": "yearly"
+    }
+  ]
+}

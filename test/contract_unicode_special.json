@@ -1,0 +1,33 @@
+{
+  "contractName": "Unicode & Special Characters Test: Àéîöü ñ 日本語 🖨️",
+  "provider": "Spéciál Châractérs Lösung GmbH & Co. KG",
+  "duration": 24,
+  "manufacturer": "ÜnicödeBränd",
+  "model": "Prïntér-2000™ (Spéciál Édition)",
+  "maintenance": 75,
+  "reliability": 82,
+  "support": 68,
+  "easeOfUse": 90,
+  "repairability": 73,
+  "baseCost": 67.50,
+  "setupFee": 99.99,
+  "deliveryFee": 45.00,
+  "monoIncluded": 4000,
+  "monoOverrun": 0.008,
+  "colorIncluded": 1500,
+  "colorOverrun": 0.042,
+  "extraCosts": [
+    {
+      "description": "Spéciál fönt süppört & émöjï prïntïng 📄✨",
+      "amount": 29.99,
+      "frequency": "monthly"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "Ìntërnätïönäl cüstömër bönus 🌍",
+      "amount": 15.00,
+      "frequency": "monthly"
+    }
+  ]
+}

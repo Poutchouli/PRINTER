@@ -1,0 +1,43 @@
+{
+  "contractName": "Ricoh Aficio Color Contract",
+  "provider": "Ricoh Europe",
+  "duration": 60,
+  "manufacturer": "Ricoh",
+  "model": "Aficio MP C3003SP",
+  "maintenance": 82,
+  "reliability": 88,
+  "support": 80,
+  "easeOfUse": 89,
+  "repairability": 78,
+  "baseCost": 125.00,
+  "setupFee": 200.00,
+  "deliveryFee": 85.00,
+  "monoIncluded": 6000,
+  "monoOverrun": 0.007,
+  "colorIncluded": 2000,
+  "colorOverrun": 0.042,
+  "extraCosts": [
+    {
+      "description": "High-capacity toner",
+      "amount": 45.00,
+      "frequency": "quarterly"
+    },
+    {
+      "description": "Document feeder upgrade",
+      "amount": 450.00,
+      "frequency": "one-time"
+    },
+    {
+      "description": "Cloud printing license",
+      "amount": 8.99,
+      "frequency": "monthly"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "Long-term contract discount",
+      "amount": 20.00,
+      "frequency": "monthly"
+    }
+  ]
+}

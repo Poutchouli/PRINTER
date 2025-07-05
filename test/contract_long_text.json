@@ -1,0 +1,38 @@
+{
+  "contractName": "Very Long Contract Name That Goes On And On And Should Test How The Interface Handles Really Long Text Fields That Might Overflow Or Cause Layout Issues In The User Interface",
+  "provider": "Super Duper Extra Long Company Name That Tests The Limits Of Text Field Display And Input Validation International Business Solutions Corporation Limited Partnership & Associates",
+  "duration": 36,
+  "manufacturer": "LongNameBrand",
+  "model": "Model-With-A-Very-Long-Name-That-Includes-Lots-Of-Technical-Specifications-And-Details-XL-Pro-Max-Ultra-Edition-2024",
+  "maintenance": 85,
+  "reliability": 88,
+  "support": 82,
+  "easeOfUse": 79,
+  "repairability": 86,
+  "baseCost": 123.45,
+  "setupFee": 234.56,
+  "deliveryFee": 89.12,
+  "monoIncluded": 7500,
+  "monoOverrun": 0.0075,
+  "colorIncluded": 2250,
+  "colorOverrun": 0.0425,
+  "extraCosts": [
+    {
+      "description": "Extremely detailed premium support package that includes on-site maintenance, remote monitoring, predictive analytics, staff training, documentation, and comprehensive warranty coverage for all components and consumables",
+      "amount": 67.89,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Advanced multi-functional finishing unit with stapling, hole punching, folding, booklet making, and professional binding capabilities for high-end document production",
+      "amount": 156.78,
+      "frequency": "monthly"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "Long-term commitment discount for customers who sign extended contracts and agree to volume commitments with automatic renewal clauses",
+      "amount": 34.56,
+      "frequency": "monthly"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "contractName": "HP LaserJet Enterprise",
+  "provider": "HP Business Direct",
+  "duration": 48,
+  "manufacturer": "HP",
+  "model": "LaserJet Enterprise MFP M631dn",
+  "maintenance": 75,
+  "reliability": 80,
+  "support": 70,
+  "easeOfUse": 85,
+  "repairability": 70,
+  "baseCost": 65.50,
+  "setupFee": 95.00,
+  "deliveryFee": 50.00,
+  "monoIncluded": 8000,
+  "monoOverrun": 0.006,
+  "colorIncluded": 0,
+  "colorOverrun": 0.000,
+  "extraCosts": [
+    {
+      "description": "Additional paper tray",
+      "amount": 320.00,
+      "frequency": "one-time"
+    },
+    {
+      "description": "Extended warranty",
+      "amount": 15.00,
+      "frequency": "monthly"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "Volume discount",
+      "amount": 5.50,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Early payment discount",
+      "amount": 2.5,
+      "frequency": "quarterly"
+    }
+  ]
+}

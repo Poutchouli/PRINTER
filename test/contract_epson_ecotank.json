@@ -1,0 +1,43 @@
+{
+  "contractName": "Epson EcoTank Business",
+  "provider": "Epson Business Solutions",
+  "duration": 24,
+  "manufacturer": "Epson",
+  "model": "EcoTank Pro ET-5170",
+  "maintenance": 88,
+  "reliability": 90,
+  "support": 85,
+  "easeOfUse": 87,
+  "repairability": 85,
+  "baseCost": 42.99,
+  "setupFee": 80.00,
+  "deliveryFee": 35.00,
+  "monoIncluded": 12000,
+  "monoOverrun": 0.003,
+  "colorIncluded": 3000,
+  "colorOverrun": 0.025,
+  "extraCosts": [
+    {
+      "description": "Ink refill service",
+      "amount": 18.00,
+      "frequency": "quarterly"
+    },
+    {
+      "description": "Network configuration",
+      "amount": 120.00,
+      "frequency": "one-time"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "Small business discount",
+      "amount": 5.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Green technology incentive",
+      "amount": 25.00,
+      "frequency": "yearly"
+    }
+  ]
+}

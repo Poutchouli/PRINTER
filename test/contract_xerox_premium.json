@@ -1,0 +1,43 @@
+{
+  "contractName": "Xerox WorkCentre Premium",
+  "provider": "Xerox Direct Services",
+  "duration": 36,
+  "manufacturer": "Xerox",
+  "model": "WorkCentre 6515",
+  "maintenance": 65,
+  "reliability": 70,
+  "support": 55,
+  "easeOfUse": 85,
+  "repairability": 60,
+  "baseCost": 95.75,
+  "setupFee": 175.00,
+  "deliveryFee": 90.00,
+  "monoIncluded": 4000,
+  "monoOverrun": 0.009,
+  "colorIncluded": 1200,
+  "colorOverrun": 0.048,
+  "extraCosts": [
+    {
+      "description": "Premium support package",
+      "amount": 35.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Security software license",
+      "amount": 150.00,
+      "frequency": "yearly"
+    },
+    {
+      "description": "Installation and setup",
+      "amount": 300.00,
+      "frequency": "one-time"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "Multi-device discount",
+      "amount": 12.00,
+      "frequency": "monthly"
+    }
+  ]
+}

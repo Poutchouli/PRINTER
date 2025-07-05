@@ -1,0 +1,43 @@
+{
+  "contractName": "Koesio Kyocera Eco Contract",
+  "provider": "Koesio Business Solutions",
+  "duration": 42,
+  "manufacturer": "Koesio (Kyocera)",
+  "model": "ECOSYS M3145idn",
+  "maintenance": 85,
+  "reliability": 92,
+  "support": 85,
+  "easeOfUse": 85,
+  "repairability": 88,
+  "baseCost": 78.50,
+  "setupFee": 120.00,
+  "deliveryFee": 60.00,
+  "monoIncluded": 7500,
+  "monoOverrun": 0.005,
+  "colorIncluded": 0,
+  "colorOverrun": 0.000,
+  "extraCosts": [
+    {
+      "description": "Mobile printing setup",
+      "amount": 12.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Initial training session",
+      "amount": 250.00,
+      "frequency": "one-time"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "Eco-friendly discount",
+      "amount": 8.50,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Loyalty customer bonus",
+      "amount": 50.00,
+      "frequency": "yearly"
+    }
+  ]
+}

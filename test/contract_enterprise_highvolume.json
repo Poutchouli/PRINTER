@@ -1,0 +1,63 @@
+{
+  "contractName": "Enterprise High-Volume Solution",
+  "provider": "Corporate Print Solutions Ltd",
+  "duration": 60,
+  "manufacturer": "Konica Minolta",
+  "model": "bizhub C754e",
+  "maintenance": 95,
+  "reliability": 98,
+  "support": 95,
+  "easeOfUse": 75,
+  "repairability": 85,
+  "baseCost": 450.00,
+  "setupFee": 500.00,
+  "deliveryFee": 200.00,
+  "monoIncluded": 50000,
+  "monoOverrun": 0.003,
+  "colorIncluded": 25000,
+  "colorOverrun": 0.025,
+  "extraCosts": [
+    {
+      "description": "24/7 premium support",
+      "amount": 150.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Advanced finishing unit",
+      "amount": 200.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Managed print services",
+      "amount": 300.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Annual maintenance check",
+      "amount": 800.00,
+      "frequency": "yearly"
+    },
+    {
+      "description": "Initial training session",
+      "amount": 1200.00,
+      "frequency": "one-time"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "5-year enterprise commitment",
+      "amount": 75.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "High-volume discount",
+      "amount": 50.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Multi-location discount",
+      "amount": 2000.00,
+      "frequency": "yearly"
+    }
+  ]
+}
