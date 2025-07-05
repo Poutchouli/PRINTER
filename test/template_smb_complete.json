@@ -1,0 +1,76 @@
+{
+  "contractName": "SMB Complete Package Template",
+  "provider": "Small Business Print Solutions",
+  "duration": 36,
+  "manufacturer": "HP",
+  "model": "Color LaserJet Pro MFP M479fdw",
+  "maintenance": 78,
+  "reliability": 85,
+  "support": 75,
+  "easeOfUse": 92,
+  "repairability": 72,
+  "baseCost": 89.99,
+  "setupFee": 125.00,
+  "deliveryFee": 65.00,
+  "monoIncluded": 5000,
+  "monoOverrun": 0.007,
+  "colorIncluded": 2000,
+  "colorOverrun": 0.045,
+  "extraCosts": [
+    {
+      "description": "Toner subscription service",
+      "amount": 35.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Paper supply service",
+      "amount": 20.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Quarterly maintenance visit",
+      "amount": 85.00,
+      "frequency": "quarterly"
+    },
+    {
+      "description": "Wi-Fi setup and configuration",
+      "amount": 150.00,
+      "frequency": "one-time"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "First-time customer discount",
+      "amount": 15.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Annual payment discount",
+      "amount": 100.00,
+      "frequency": "yearly"
+    }
+  ],
+  "additionalFields": {
+    "contractStartDate": "2025-03-01",
+    "contractEndDate": "2028-02-29",
+    "billingCycle": "monthly",
+    "paymentTerms": "NET15",
+    "serviceLevel": "Business Hours",
+    "maintenanceWindow": "8AM-6PM, Mon-Fri",
+    "escrowAccount": false,
+    "autoRenewal": false,
+    "earlyTerminationFee": 500.00,
+    "insuranceRequired": false,
+    "dataSecurityLevel": "Standard",
+    "environmentalCertification": "Energy Star",
+    "complianceStandards": ["PCI DSS"],
+    "backupUnit": false,
+    "remoteMonitoring": false,
+    "predictiveMaintenance": false,
+    "userTraining": "Basic setup included",
+    "warrantyExtension": "Standard 1 year",
+    "consumablesIncluded": true,
+    "tonerDeliveryFrequency": "As needed",
+    "supportLanguages": ["English", "French"]
+  }
+}

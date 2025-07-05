@@ -1,0 +1,89 @@
+{
+  "contractName": "Healthcare Facility Template",
+  "provider": "MedPrint Healthcare Solutions",
+  "duration": 42,
+  "manufacturer": "Xerox",
+  "model": "VersaLink C7030",
+  "maintenance": 95,
+  "reliability": 98,
+  "support": 95,
+  "easeOfUse": 78,
+  "repairability": 82,
+  "baseCost": 195.00,
+  "setupFee": 275.00,
+  "deliveryFee": 110.00,
+  "monoIncluded": 8000,
+  "monoOverrun": 0.006,
+  "colorIncluded": 3000,
+  "colorOverrun": 0.040,
+  "extraCosts": [
+    {
+      "description": "HIPAA compliance module",
+      "amount": 75.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Medical records printing",
+      "amount": 60.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Secure badge printing",
+      "amount": 45.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Emergency 24/7 support",
+      "amount": 120.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Annual security audit",
+      "amount": 800.00,
+      "frequency": "yearly"
+    },
+    {
+      "description": "Biohazard cleaning service",
+      "amount": 250.00,
+      "frequency": "quarterly"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "Healthcare provider discount",
+      "amount": 30.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Non-profit medical facility",
+      "amount": 400.00,
+      "frequency": "yearly"
+    }
+  ],
+  "additionalFields": {
+    "contractStartDate": "2025-01-15",
+    "contractEndDate": "2028-07-14",
+    "billingCycle": "monthly",
+    "paymentTerms": "NET30",
+    "serviceLevel": "Critical Healthcare",
+    "maintenanceWindow": "24/7 emergency response",
+    "escrowAccount": true,
+    "autoRenewal": false,
+    "earlyTerminationFee": 3500.00,
+    "insuranceRequired": true,
+    "dataSecurityLevel": "HIPAA Compliant",
+    "environmentalCertification": "Hospital grade, antimicrobial",
+    "complianceStandards": ["HIPAA", "FDA", "Joint Commission"],
+    "backupUnit": true,
+    "remoteMonitoring": true,
+    "predictiveMaintenance": true,
+    "medicalGradeEncryption": true,
+    "patientDataHandling": "Secure destruction",
+    "emergencyServiceLevel": "2-hour response",
+    "infectionControlMeasures": true,
+    "auditTrailLogging": true,
+    "pharmaceuticalLabeling": true,
+    "patientWristbandPrinting": true,
+    "radiologyImagePrinting": true
+  }
+}

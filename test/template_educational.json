@@ -1,0 +1,87 @@
+{
+  "contractName": "Educational Institution Template",
+  "provider": "EduPrint Academic Solutions",
+  "duration": 60,
+  "manufacturer": "Ricoh",
+  "model": "Aficio MP C6003SP",
+  "maintenance": 88,
+  "reliability": 92,
+  "support": 85,
+  "easeOfUse": 80,
+  "repairability": 85,
+  "baseCost": 165.00,
+  "setupFee": 200.00,
+  "deliveryFee": 95.00,
+  "monoIncluded": 12000,
+  "monoOverrun": 0.005,
+  "colorIncluded": 4000,
+  "colorOverrun": 0.035,
+  "extraCosts": [
+    {
+      "description": "Student ID card printing module",
+      "amount": 55.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Secure print release system",
+      "amount": 40.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Academic calendar printing",
+      "amount": 150.00,
+      "frequency": "yearly"
+    },
+    {
+      "description": "Summer break storage",
+      "amount": 75.00,
+      "frequency": "yearly"
+    },
+    {
+      "description": "Faculty training sessions",
+      "amount": 800.00,
+      "frequency": "one-time"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "Educational institution discount",
+      "amount": 25.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Long-term academic commitment",
+      "amount": 300.00,
+      "frequency": "yearly"
+    },
+    {
+      "description": "Non-profit organization rebate",
+      "amount": 200.00,
+      "frequency": "yearly"
+    }
+  ],
+  "additionalFields": {
+    "contractStartDate": "2025-09-01",
+    "contractEndDate": "2030-08-31",
+    "billingCycle": "quarterly",
+    "paymentTerms": "NET45",
+    "serviceLevel": "Academic Support",
+    "maintenanceWindow": "24/7 with academic priority",
+    "escrowAccount": false,
+    "autoRenewal": true,
+    "earlyTerminationFee": 1000.00,
+    "insuranceRequired": true,
+    "dataSecurityLevel": "FERPA Compliant",
+    "environmentalCertification": "Green Seal, Energy Star",
+    "complianceStandards": ["FERPA", "ADA"],
+    "backupUnit": true,
+    "remoteMonitoring": true,
+    "predictiveMaintenance": true,
+    "academicScheduleAdaptation": true,
+    "summerBreakService": "Reduced rate",
+    "studentWorkerTraining": true,
+    "bulkOrderingCapability": true,
+    "examPeriodSupport": "Priority response",
+    "accessibilityFeatures": "ADA compliant interface"
+  }
+}

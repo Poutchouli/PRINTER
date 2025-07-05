@@ -1,0 +1,91 @@
+{
+  "contractName": "Advanced Enterprise Template",
+  "provider": "MegaCorp Solutions Ltd",
+  "duration": 48,
+  "manufacturer": "Canon",
+  "model": "imageRUNNER ADVANCE DX C5870i",
+  "maintenance": 92,
+  "reliability": 95,
+  "support": 90,
+  "easeOfUse": 85,
+  "repairability": 88,
+  "baseCost": 245.00,
+  "setupFee": 350.00,
+  "deliveryFee": 125.00,
+  "monoIncluded": 15000,
+  "monoOverrun": 0.004,
+  "colorIncluded": 8000,
+  "colorOverrun": 0.028,
+  "extraCosts": [
+    {
+      "description": "Advanced security module",
+      "amount": 45.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Cloud connectivity service",
+      "amount": 25.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Mobile printing suite",
+      "amount": 15.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Document workflow software",
+      "amount": 65.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Annual security audit",
+      "amount": 500.00,
+      "frequency": "yearly"
+    },
+    {
+      "description": "Staff training program",
+      "amount": 1200.00,
+      "frequency": "one-time"
+    },
+    {
+      "description": "Environmental compliance fee",
+      "amount": 8.50,
+      "frequency": "monthly"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "Multi-year contract discount",
+      "amount": 35.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Enterprise customer loyalty",
+      "amount": 20.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Green initiative rebate",
+      "amount": 150.00,
+      "frequency": "yearly"
+    }
+  ],
+  "additionalFields": {
+    "contractStartDate": "2025-01-01",
+    "contractEndDate": "2028-12-31",
+    "billingCycle": "monthly",
+    "paymentTerms": "NET30",
+    "serviceLevel": "Premium 24/7",
+    "maintenanceWindow": "24/7 on-site",
+    "escrowAccount": true,
+    "autoRenewal": true,
+    "earlyTerminationFee": 2500.00,
+    "insuranceRequired": true,
+    "dataSecurityLevel": "ISO 27001",
+    "environmentalCertification": "Energy Star, EPEAT Gold",
+    "complianceStandards": ["GDPR", "SOX", "HIPAA"],
+    "backupUnit": true,
+    "remoteMonitoring": true,
+    "predictiveMaintenance": true
+  }
+}

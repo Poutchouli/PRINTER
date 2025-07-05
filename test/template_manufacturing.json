@@ -1,0 +1,90 @@
+{
+  "contractName": "Manufacturing Floor Template",
+  "provider": "Industrial Print Systems",
+  "duration": 36,
+  "manufacturer": "Epson",
+  "model": "WorkForce Pro WF-C879R",
+  "maintenance": 85,
+  "reliability": 90,
+  "support": 80,
+  "easeOfUse": 75,
+  "repairability": 88,
+  "baseCost": 135.00,
+  "setupFee": 180.00,
+  "deliveryFee": 85.00,
+  "monoIncluded": 10000,
+  "monoOverrun": 0.004,
+  "colorIncluded": 5000,
+  "colorOverrun": 0.032,
+  "extraCosts": [
+    {
+      "description": "Industrial grade chassis",
+      "amount": 50.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Dust protection service",
+      "amount": 30.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Label and barcode printing",
+      "amount": 40.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Safety documentation printing",
+      "amount": 25.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Monthly deep cleaning",
+      "amount": 120.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Vibration isolation system",
+      "amount": 350.00,
+      "frequency": "one-time"
+    }
+  ],
+  "discounts": [
+    {
+      "description": "Industrial customer discount",
+      "amount": 20.00,
+      "frequency": "monthly"
+    },
+    {
+      "description": "Manufacturing partnership",
+      "amount": 250.00,
+      "frequency": "yearly"
+    }
+  ],
+  "additionalFields": {
+    "contractStartDate": "2025-02-01",
+    "contractEndDate": "2028-01-31",
+    "billingCycle": "monthly",
+    "paymentTerms": "NET30",
+    "serviceLevel": "Industrial 24/7",
+    "maintenanceWindow": "24/7 with shift coverage",
+    "escrowAccount": false,
+    "autoRenewal": true,
+    "earlyTerminationFee": 1500.00,
+    "insuranceRequired": true,
+    "dataSecurityLevel": "Industrial Standard",
+    "environmentalCertification": "Industrial grade, IP54 rated",
+    "complianceStandards": ["OSHA", "ISO 14001", "ISO 45001"],
+    "backupUnit": true,
+    "remoteMonitoring": true,
+    "predictiveMaintenance": true,
+    "dustResistance": "IP54 rated",
+    "temperatureRange": "-10°C to 40°C",
+    "humidityTolerance": "20% to 80% RH",
+    "vibrationResistance": true,
+    "chemicalResistance": "Industrial solvents",
+    "shiftScheduleSupport": "24/7 three-shift",
+    "safetyDocumentationSupport": true,
+    "barcodeQuality": "Grade A verification",
+    "qualityControlIntegration": true
+  }
+}

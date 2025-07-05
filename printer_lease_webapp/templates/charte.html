@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: 2025 French Professional Printer Market Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+            color: #1a202c;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+                max-height: 450px;
+            }
+        }
+        .stat-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #004AAD, #0079FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white shadow-md py-6">
+        <div class="container mx-auto px-6 text-center relative">
+            <h1 class="text-3xl md:text-5xl font-extrabold gradient-text" data-key="title"></h1>
+            <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto" data-key="subtitle"></p>
+            <div class="absolute top-4 right-6">
+                <button id="lang-toggle" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full text-sm">FR / EN</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+        
+        <section id="overview" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-4 text-gray-800" data-key="overviewTitle"></h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8" data-key="overviewText"></p>
+            <div class="stat-card">
+                <div class="chart-container">
+                    <canvas id="performanceRadarChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="cost" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-4 text-gray-800" data-key="costTitle"></h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8" data-key="costText"></p>
+            <div class="stat-card">
+                 <div class="chart-container h-96 md:h-[500px] max-h-[600px]">
+                    <canvas id="priceComparisonChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="deep-dive" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-4 text-gray-800" data-key="deepDiveTitle"></h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8" data-key="deepDiveText"></p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="stat-card">
+                    <h3 class="text-xl font-bold mb-4 text-center text-[#004AAD]" data-key="reliabilityChartTitle"></h3>
+                    <div class="chart-container">
+                        <canvas id="reliabilityChart"></canvas>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <h3 class="text-xl font-bold mb-4 text-center text-[#004AAD]" data-key="supportChartTitle"></h3>
+                    <div class="chart-container">
+                        <canvas id="supportChart"></canvas>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <h3 class="text-xl font-bold mb-4 text-center text-[#004AAD]" data-key="easeOfUseChartTitle"></h3>
+                     <div class="chart-container">
+                        <canvas id="easeOfUseChart"></canvas>
+                    </div>
+                </div>
+                <div class="stat-card">
+                     <h3 class="text-xl font-bold mb-4 text-center text-[#004AAD]" data-key="repairabilityChartTitle"></h3>
+                    <div class="chart-container">
+                        <canvas id="repairabilityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="trends" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-4 text-gray-800" data-key="trendsTitle"></h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8" data-key="trendsText"></p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="stat-card text-center">
+                    <div class="text-6xl mb-4">☁️</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2" data-key="trend1Title"></h3>
+                    <p class="text-gray-600" data-key="trend1Desc"></p>
+                </div>
+                <div class="stat-card text-center">
+                    <div class="text-6xl mb-4">🛡️</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2" data-key="trend2Title"></h3>
+                    <p class="text-gray-600" data-key="trend2Desc"></p>
+                </div>
+                <div class="stat-card text-center">
+                    <div class="text-6xl mb-4">🌱</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2" data-key="trend3Title"></h3>
+                    <p class="text-gray-600" data-key="trend3Desc"></p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="verdict" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-4 text-gray-800" data-key="verdictTitle"></h2>
+             <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8" data-key="verdictText"></p>
+            <div class="stat-card overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="p-3 font-bold uppercase bg-gray-100 text-gray-600 border border-gray-300 hidden lg:table-cell" data-key="tableHeaderManufacturer"></th>
+                            <th class="p-3 font-bold uppercase bg-gray-100 text-gray-600 border border-gray-300 hidden lg:table-cell" data-key="tableHeaderStrength"></th>
+                            <th class="p-3 font-bold uppercase bg-gray-100 text-gray-600 border border-gray-300 hidden lg:table-cell" data-key="tableHeaderWeakness"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="verdictTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="container mx-auto px-6 text-center">
+            <p data-key="footerText1"></p>
+            <p class="text-sm text-gray-400 mt-2" data-key="footerText2"></p>
+        </div>
+    </footer>
+
+    <script>
+        let performanceRadarChartInstance = null;
+        let priceComparisonChartInstance = null;
+        let reliabilityChartInstance = null;
+        let supportChartInstance = null;
+        let easeOfUseChartInstance = null;
+        let repairabilityChartInstance = null;
+
+        const translations = {
+            en: {
+                title: "Navigating the 2025 French Professional Printer Market",
+                subtitle: "An infographic analysis of leading printer manufacturers based on performance, cost, and key market trends shaping business decisions in France.",
+                overviewTitle: "Market Leaders at a Glance",
+                overviewText: "Top-performing brands reveal distinct strengths across key evaluation criteria. This radar chart compares the highest-rated manufacturers—Kyocera, Canon, and Epson—across five critical performance metrics, providing a holistic view of their market position.",
+                costTitle: "The Price Equation: Purchase vs. Lease",
+                costText: "Financial models for acquiring professional printers vary significantly. While leasing offers predictable monthly costs, outright purchasing involves a higher upfront investment. This chart visualizes the average cost spectrum for both models across major brands in the French market.",
+                deepDiveTitle: "Performance Deep Dive: Who Excels and Where?",
+                deepDiveText: "Beyond overall scores, specific strengths define each brand. These charts rank manufacturers based on individual performance metrics, highlighting leaders in reliability, maintenance, user-friendliness, support, and repairability.",
+                reliabilityChartTitle: "Reliability Champions",
+                supportChartTitle: "Top-Tier Support",
+                easeOfUseChartTitle: "Most User-Friendly",
+                repairabilityChartTitle: "Best in Repairability",
+                trendsTitle: "Key Trends Shaping Decisions",
+                trendsText: "The modern office demands more than just printing. Three core pillars—digital integration, robust security, and sustainability—are now critical factors influencing procurement choices across France.",
+                trend1Title: "Digital & Cloud Integration",
+                trend1Desc: "Seamless connection to cloud services like Google Drive and SharePoint, alongside mobile printing, is now standard. Printers are becoming central hubs in digital workflows.",
+                trend2Title: "Cybersecurity First",
+                trend2Desc: "With rising data threats, features like encrypted storage, secure boot, and user authentication are paramount for protecting sensitive business information.",
+                trend3Title: "Sustainability & Eco-Design",
+                trend3Desc: "Energy-efficient technologies, use of recycled materials, and waste reduction are key selling points, aligning with CSR goals and European regulations.",
+                verdictTitle: "The Verdict: Brand Strengths & Weaknesses",
+                verdictText: "A summary of the most notable positive and negative findings for key players in the French market, providing a quick reference for strategic decision-making.",
+                tableHeaderManufacturer: "Manufacturer",
+                tableHeaderStrength: "Key Strength",
+                tableHeaderWeakness: "Reported Weakness",
+                footerText1: "Data sourced from the \"Data Analysis Report: Professional A3 & A4 Printers in the French Market (2024-2025)\".",
+                footerText2: "Infographic created by Canvas Infographics. No SVG or Mermaid JS used in this visualization.",
+                chartLabels: {
+                    radar: ['Reliability', 'Repairability', 'Maintenance', 'Support', 'Ease of Use'],
+                    leasePrice: "Avg. Lease Price (€/month)",
+                    purchasePrice: "Avg. Purchase Price (€)",
+                    yLeaseTitle: "Lease Price (€/month)",
+                    yPurchaseTitle: "Purchase Price (€) - Log Scale",
+                    reliabilityScore: "Reliability Score",
+                    supportScore: "Support Score",
+                    easeOfUseScore: "Ease of Use Score",
+                    repairabilityScore: "Repairability Score"
+                },
+                brandData: [
+                    { brand: 'Canon', maintenance: 85, reliability: 90, support: 88, easeOfUse: 87, repairability: 80, purchasePrice: 3800, leasePrice: 138, strength: 'Top-tier reliability and support.', weakness: 'Higher-end models can be costly.' },
+                    { brand: 'Toshiba', maintenance: 85, reliability: 88, support: 80, easeOfUse: 87, repairability: 80, purchasePrice: 4500, leasePrice: 135, strength: 'Excellent ease of use with customizable UIs.', weakness: 'Support can be disrupted by operational issues.' },
+                    { brand: 'Ricoh', maintenance: 82, reliability: 88, support: 80, easeOfUse: 89, repairability: 78, purchasePrice: 9750, leasePrice: 160, strength: 'Leader in usability with "Always Current" tech.', weakness: 'Support can be inconsistent (externalized services).' },
+                    { brand: 'Konica Minolta', maintenance: 80, reliability: 90, support: 82, easeOfUse: 85, repairability: 75, purchasePrice: 2600, leasePrice: 118, strength: 'Award-winning reliability and security options.', weakness: 'Repairability score is average.' },
+                    { brand: 'Koesio (Kyocera)', maintenance: 85, reliability: 92, support: 85, easeOfUse: 85, repairability: 88, purchasePrice: 2550, leasePrice: 93, strength: 'Market leader in reliability and repairability.', weakness: 'Fewer advanced software options out-of-the-box.' },
+                    { brand: 'Sharp', maintenance: 70, reliability: 75, support: 60, easeOfUse: 80, repairability: 65, purchasePrice: 3000, leasePrice: 398, strength: 'Good usability and certified security.', weakness: 'Very poor after-sales support reported in France.' },
+                    { brand: 'Xerox', maintenance: 65, reliability: 70, support: 55, easeOfUse: 85, repairability: 60, purchasePrice: 8250, leasePrice: 0, strength: 'Excellent usability and workflow automation.', weakness: 'Lowest-rated support and maintenance in France.' },
+                    { brand: 'HP', maintenance: 75, reliability: 80, support: 70, easeOfUse: 85, repairability: 70, purchasePrice: 1345, leasePrice: 0, strength: 'Strong ease of use and diverse product range.', weakness: 'Support for complex issues can be lacking.' },
+                    { brand: 'Epson', maintenance: 88, reliability: 90, support: 85, easeOfUse: 87, repairability: 85, purchasePrice: 7000, leasePrice: 225, strength: 'Excellent maintenance and reliability due to Heat-Free tech.', weakness: 'High-end enterprise models have a high purchase price.' },
+                ]
+            },
+            fr: {
+                title: "Naviguer sur le marché français des imprimantes professionnelles 2025",
+                subtitle: "Une analyse infographique des principaux fabricants d'imprimantes basée sur les performances, les coûts et les tendances clés du marché qui influencent les décisions commerciales en France.",
+                overviewTitle: "Les leaders du marché en un coup d'œil",
+                overviewText: "Les marques les plus performantes révèlent des atouts distincts selon des critères d'évaluation clés. Ce graphique radar compare les fabricants les mieux notés—Kyocera, Canon et Epson—selon cinq métriques de performance critiques, offrant une vue holistique de leur position sur le marché.",
+                costTitle: "L'équation du prix : Achat vs. Location",
+                costText: "Les modèles financiers pour l'acquisition d'imprimantes professionnelles varient considérablement. Tandis que la location offre des coûts mensuels prévisibles, l'achat direct implique un investissement initial plus élevé. Ce graphique visualise le spectre des coûts moyens pour les deux modèles chez les principales marques sur le marché français.",
+                deepDiveTitle: "Analyse approfondie des performances : Qui excelle et où ?",
+                deepDiveText: "Au-delà des scores globaux, des atouts spécifiques définissent chaque marque. Ces graphiques classent les fabricants en fonction de leurs métriques de performance individuelles, mettant en lumière les leaders en matière de fiabilité, de maintenance, de facilité d'utilisation, de support et de réparabilité.",
+                reliabilityChartTitle: "Champions de la fiabilité",
+                supportChartTitle: "Support de premier ordre",
+                easeOfUseChartTitle: "Le plus facile à utiliser",
+                repairabilityChartTitle: "Meilleure réparabilité",
+                trendsTitle: "Tendances clés qui façonnent les décisions",
+                trendsText: "Le bureau moderne exige plus que de l'impression. Trois piliers fondamentaux—l'intégration numérique, une sécurité robuste et la durabilité—sont désormais des facteurs critiques influençant les choix d'approvisionnement à travers la France.",
+                trend1Title: "Intégration numérique et cloud",
+                trend1Desc: "La connexion transparente aux services cloud comme Google Drive et SharePoint, ainsi que l'impression mobile, sont désormais la norme. Les imprimantes deviennent des centres névralgiques dans les flux de travail numériques.",
+                trend2Title: "La cybersécurité d'abord",
+                trend2Desc: "Face à l'augmentation des menaces de données, des fonctionnalités telles que le stockage chiffré, le démarrage sécurisé et l'authentification des utilisateurs sont primordiales pour protéger les informations commerciales sensibles.",
+                trend3Title: "Durabilité et éco-conception",
+                trend3Desc: "Les technologies écoénergétiques, l'utilisation de matériaux recyclés et la réduction des déchets sont des arguments de vente clés, en accord avec les objectifs RSE et les réglementations européennes.",
+                verdictTitle: "Le verdict : Forces et faiblesses des marques",
+                verdictText: "Un résumé des constatations positives et négatives les plus notables pour les acteurs clés du marché français, offrant une référence rapide pour la prise de décision stratégique.",
+                tableHeaderManufacturer: "Fabricant",
+                tableHeaderStrength: "Force clé",
+                tableHeaderWeakness: "Faiblesse signalée",
+                footerText1: "Données issues du \"Rapport d'analyse de données : Imprimantes professionnelles A3 et A4 sur le marché français (2024-2025)\".",
+                footerText2: "Infographie créée par Canvas Infographics. Aucun SVG ou Mermaid JS utilisé dans cette visualisation.",
+                chartLabels: {
+                    radar: ['Fiabilité', 'Réparabilité', 'Maintenance', 'Support', 'Facilité d\'utilisation'],
+                    leasePrice: "Prix moyen de location (€/mois)",
+                    purchasePrice: "Prix moyen d'achat (€)",
+                    yLeaseTitle: "Prix de location (€/mois)",
+                    yPurchaseTitle: "Prix d'achat (€) - Échelle log",
+                    reliabilityScore: "Score de fiabilité",
+                    supportScore: "Score de support",
+                    easeOfUseScore: "Score de facilité d'utilisation",
+                    repairabilityScore: "Score de réparabilité"
+                },
+                brandData: [
+                    { brand: 'Canon', maintenance: 85, reliability: 90, support: 88, easeOfUse: 87, repairability: 80, purchasePrice: 3800, leasePrice: 138, strength: 'Fiabilité et support de premier ordre.', weakness: 'Les modèles haut de gamme peuvent être coûteux.' },
+                    { brand: 'Toshiba', maintenance: 85, reliability: 88, support: 80, easeOfUse: 87, repairability: 80, purchasePrice: 4500, leasePrice: 135, strength: 'Excellente facilité d\'utilisation avec des interfaces personnalisables.', weakness: 'Le support peut être perturbé par des problèmes opérationnels.' },
+                    { brand: 'Ricoh', maintenance: 82, reliability: 88, support: 80, easeOfUse: 89, repairability: 78, purchasePrice: 9750, leasePrice: 160, strength: 'Leader en convivialité avec la technologie "Always Current".', weakness: 'Le support peut être incohérent (services externalisés).' },
+                    { brand: 'Konica Minolta', maintenance: 80, reliability: 90, support: 82, easeOfUse: 85, repairability: 75, purchasePrice: 2600, leasePrice: 118, strength: 'Fiabilité et options de sécurité primées.', weakness: 'Le score de réparabilité est moyen.' },
+                    { brand: 'Koesio (Kyocera)', maintenance: 85, reliability: 92, support: 85, easeOfUse: 85, repairability: 88, purchasePrice: 2550, leasePrice: 93, strength: 'Leader du marché en fiabilité et réparabilité.', weakness: 'Moins d\'options logicielles avancées prêtes à l\'emploi.' },
+                    { brand: 'Sharp', maintenance: 70, reliability: 75, support: 60, easeOfUse: 80, repairability: 65, purchasePrice: 3000, leasePrice: 398, strength: 'Bonne convivialité et sécurité certifiée.', weakness: 'Très mauvais support après-vente signalé en France.' },
+                    { brand: 'Xerox', maintenance: 65, reliability: 70, support: 55, easeOfUse: 85, repairability: 60, purchasePrice: 8250, leasePrice: 0, strength: 'Excellente convivialité et automatisation des flux de travail.', weakness: 'Support et maintenance les moins bien notés en France.' },
+                    { brand: 'HP', maintenance: 75, reliability: 80, support: 70, easeOfUse: 85, repairability: 70, purchasePrice: 1345, leasePrice: 0, strength: 'Grande facilité d\'utilisation et gamme de produits diversifiée.', weakness: 'Le support pour les problèmes complexes peut être insuffisant.' },
+                    { brand: 'Epson', maintenance: 88, reliability: 90, support: 85, easeOfUse: 87, repairability: 85, purchasePrice: 7000, leasePrice: 225, strength: 'Excellente maintenance et fiabilité grâce à la technologie Heat-Free.', weakness: 'Les modèles d\'entreprise haut de gamme ont un prix d\'achat élevé.' },
+                ]
+            }
+        };
+
+        let currentLang = 'en';
+
+        const palette = {
+            blue: '#0079FF',
+            deepBlue: '#004AAD',
+            cyan: '#00D2FF',
+            lightBlue: '#89CFF3',
+            gray: 'rgba(107, 114, 128, 0.2)'
+        };
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const commonChartOptions = {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#333333',
+                        font: {
+                            family: "'Inter', sans-serif"
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    },
+                    backgroundColor: '#000',
+                    titleFont: { size: 14, weight: 'bold', family: "'Inter', sans-serif" },
+                    bodyFont: { size: 12, family: "'Inter', sans-serif" },
+                    padding: 10,
+                    cornerRadius: 4,
+                    displayColors: true
+                }
+            }
+        };
+        
+        function wrapLabel(str, maxWidth) {
+            if (str.length <= maxWidth) return str;
+            const words = str.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + words[i].length + 1 < maxWidth) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        function renderCharts(langData) {
+            const brandData = langData.brandData;
+            const chartLabels = langData.chartLabels;
+
+            if (performanceRadarChartInstance) performanceRadarChartInstance.destroy();
+            if (priceComparisonChartInstance) priceComparisonChartInstance.destroy();
+            if (reliabilityChartInstance) reliabilityChartInstance.destroy();
+            if (supportChartInstance) supportChartInstance.destroy();
+            if (easeOfUseChartInstance) easeOfUseChartInstance.destroy();
+            if (repairabilityChartInstance) repairabilityChartInstance.destroy();
+
+            const topPerformers = brandData
+                .filter(b => ['Koesio (Kyocera)', 'Canon', 'Epson'].includes(b.brand))
+                .sort((a,b) => b.reliability - a.reliability);
+
+            performanceRadarChartInstance = new Chart(document.getElementById('performanceRadarChart'), {
+                type: 'radar',
+                data: {
+                    labels: chartLabels.radar,
+                    datasets: [
+                        {
+                            label: topPerformers[0].brand,
+                            data: [topPerformers[0].reliability, topPerformers[0].repairability, topPerformers[0].maintenance, topPerformers[0].support, topPerformers[0].easeOfUse],
+                            backgroundColor: 'rgba(0, 121, 255, 0.2)',
+                            borderColor: palette.blue,
+                            pointBackgroundColor: palette.blue,
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: palette.blue
+                        },
+                        {
+                            label: topPerformers[1].brand,
+                            data: [topPerformers[1].reliability, topPerformers[1].repairability, topPerformers[1].maintenance, topPerformers[1].support, topPerformers[1].easeOfUse],
+                            backgroundColor: 'rgba(0, 74, 173, 0.2)',
+                            borderColor: palette.deepBlue,
+                            pointBackgroundColor: palette.deepBlue,
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: palette.deepBlue
+                        },
+                        {
+                            label: topPerformers[2].brand,
+                            data: [topPerformers[2].reliability, topPerformers[2].repairability, topPerformers[2].maintenance, topPerformers[2].support, topPerformers[2].easeOfUse],
+                            backgroundColor: 'rgba(0, 210, 255, 0.2)',
+                            borderColor: palette.cyan,
+                            pointBackgroundColor: palette.cyan,
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: palette.cyan
+                        }
+                    ]
+                },
+                options: {
+                    ...commonChartOptions,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                            grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                            pointLabels: {
+                                font: { size: 14, weight: '600', family: "'Inter', sans-serif" },
+                                color: '#333333'
+                            },
+                            ticks: {
+                                backdropColor: 'transparent',
+                                color: '#666',
+                                stepSize: 10
+                            },
+                            suggestedMin: 50,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+
+            const labels = brandData.map(b => wrapLabel(b.brand, 16));
+            
+            priceComparisonChartInstance = new Chart(document.getElementById('priceComparisonChart'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: chartLabels.leasePrice,
+                            data: brandData.map(b => b.leasePrice > 0 ? b.leasePrice : null),
+                            backgroundColor: palette.cyan,
+                            borderColor: palette.cyan,
+                            yAxisID: 'yLease',
+                        },
+                        {
+                            label: chartLabels.purchasePrice,
+                            data: brandData.map(b => b.purchasePrice),
+                            backgroundColor: palette.deepBlue,
+                            borderColor: palette.deepBlue,
+                            yAxisID: 'yPurchase',
+                        }
+                    ]
+                },
+                options: {
+                    ...commonChartOptions,
+                    scales: {
+                        x: {
+                            ticks: { color: '#333333' },
+                            grid: { display: false }
+                        },
+                        yLease: {
+                            type: 'linear',
+                            position: 'left',
+                            title: { display: true, text: chartLabels.yLeaseTitle, color: '#333333' },
+                            ticks: { color: '#333333' },
+                            grid: { color: 'rgba(0, 0, 0, 0.1)' }
+                        },
+                        yPurchase: {
+                            type: 'logarithmic',
+                            position: 'right',
+                            title: { display: true, text: chartLabels.yPurchaseTitle, color: '#333333' },
+                            min: 100,
+                            ticks: {
+                                color: '#333333',
+                                callback: function(value, index, values) {
+                                    if (value === 1000 || value === 10000 || value === 100) return "€" + value;
+                                }
+                            },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+            
+            function createRankingChart(canvasId, metric, label, color) {
+                const sortedData = [...brandData].sort((a, b) => b[metric] - a[metric]);
+                const labels = sortedData.map(b => wrapLabel(b.brand, 16));
+                const data = sortedData.map(b => b[metric]);
+                
+                let chartInstance;
+                if (canvasId === 'reliabilityChart') {
+                    if (reliabilityChartInstance) reliabilityChartInstance.destroy();
+                    chartInstance = reliabilityChartInstance = new Chart(document.getElementById(canvasId), {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: label,
+                                data: data,
+                                backgroundColor: color,
+                                borderColor: color,
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            ...commonChartOptions,
+                            indexAxis: 'y',
+                            scales: {
+                                x: { suggestedMin: 50, suggestedMax: 100, ticks: { color: '#333333' }, grid: { color: 'rgba(0, 0, 0, 0.1)' } },
+                                y: { ticks: { color: '#333333' }, grid: { display: false } }
+                            },
+                            plugins: { legend: { display: false }, tooltip: { callbacks: { title: tooltipTitleCallback } } }
+                        }
+                    });
+                } else if (canvasId === 'supportChart') {
+                    if (supportChartInstance) supportChartInstance.destroy();
+                    chartInstance = supportChartInstance = new Chart(document.getElementById(canvasId), {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: label,
+                                data: data,
+                                backgroundColor: color,
+                                borderColor: color,
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            ...commonChartOptions,
+                            indexAxis: 'y',
+                            scales: {
+                                x: { suggestedMin: 50, suggestedMax: 100, ticks: { color: '#333333' }, grid: { color: 'rgba(0, 0, 0, 0.1)' } },
+                                y: { ticks: { color: '#333333' }, grid: { display: false } }
+                            },
+                            plugins: { legend: { display: false }, tooltip: { callbacks: { title: tooltipTitleCallback } } }
+                        }
+                    });
+                } else if (canvasId === 'easeOfUseChart') {
+                    if (easeOfUseChartInstance) easeOfUseChartInstance.destroy();
+                    chartInstance = easeOfUseChartInstance = new Chart(document.getElementById(canvasId), {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: label,
+                                data: data,
+                                backgroundColor: color,
+                                borderColor: color,
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            ...commonChartOptions,
+                            indexAxis: 'y',
+                            scales: {
+                                x: { suggestedMin: 50, suggestedMax: 100, ticks: { color: '#333333' }, grid: { color: 'rgba(0, 0, 0, 0.1)' } },
+                                y: { ticks: { color: '#333333' }, grid: { display: false } }
+                            },
+                            plugins: { legend: { display: false }, tooltip: { callbacks: { title: tooltipTitleCallback } } }
+                        }
+                    });
+                } else if (canvasId === 'repairabilityChart') {
+                    if (repairabilityChartInstance) repairabilityChartInstance.destroy();
+                    chartInstance = repairabilityChartInstance = new Chart(document.getElementById(canvasId), {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: label,
+                                data: data,
+                                backgroundColor: color,
+                                borderColor: color,
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            ...commonChartOptions,
+                            indexAxis: 'y',
+                            scales: {
+                                x: { suggestedMin: 50, suggestedMax: 100, ticks: { color: '#333333' }, grid: { color: 'rgba(0, 0, 0, 0.1)' } },
+                                y: { ticks: { color: '#333333' }, grid: { display: false } }
+                            },
+                            plugins: { legend: { display: false }, tooltip: { callbacks: { title: tooltipTitleCallback } } }
+                        }
+                    });
+                }
+            }
+
+            createRankingChart('reliabilityChart', 'reliability', chartLabels.reliabilityScore, palette.blue);
+            createRankingChart('supportChart', 'support', chartLabels.supportScore, palette.deepBlue);
+            createRankingChart('easeOfUseChart', 'easeOfUse', chartLabels.easeOfUseScore, palette.cyan);
+            createRankingChart('repairabilityChart', 'repairability', chartLabels.repairabilityScore, palette.lightBlue);
+        }
+
+        function updateContent(lang) {
+            document.documentElement.lang = lang;
+            const currentTranslation = translations[lang];
+
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (currentTranslation[key]) {
+                    element.textContent = currentTranslation[key];
+                }
+            });
+
+            const verdictTableBody = document.getElementById('verdictTableBody');
+            if (verdictTableBody) {
+                verdictTableBody.innerHTML = ''; // Clear existing rows
+                currentTranslation.brandData.forEach(brand => {
+                    const row = `
+                        <tr class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
+                            <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
+                                <span class="lg:hidden absolute top-0 left-0 bg-gray-200 px-2 py-1 text-xs font-bold uppercase" data-key="tableHeaderManufacturer">${currentTranslation.tableHeaderManufacturer}</span>
+                                ${brand.brand}
+                            </td>
+                            <td class="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
+                                <span class="lg:hidden absolute top-0 left-0 bg-gray-200 px-2 py-1 text-xs font-bold uppercase" data-key="tableHeaderStrength">${currentTranslation.tableHeaderStrength}</span>
+                                <span class="text-green-600 font-semibold">▲</span> ${brand.strength}
+                            </td>
+                            <td class="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
+                                <span class="lg:hidden absolute top-0 left-0 bg-gray-200 px-2 py-1 text-xs font-bold uppercase" data-key="tableHeaderWeakness">${currentTranslation.tableHeaderWeakness}</span>
+                                <span class="text-red-600 font-semibold">▼</span> ${brand.weakness}
+                            </td>
+                        </tr>
+                    `;
+                    verdictTableBody.innerHTML += row;
+                });
+            }
+
+            renderCharts(currentTranslation);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateContent(currentLang);
+
+            document.getElementById('lang-toggle').addEventListener('click', () => {
+                currentLang = currentLang === 'en' ? 'fr' : 'en';
+                updateContent(currentLang);
+            });
+        });
+    </script>
+</body>
+</html>

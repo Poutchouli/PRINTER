@@ -99,7 +99,7 @@
         .import-label {
             display: inline-block;
         }
-        #import-file, #import-templates {
+        #import-templates, #import-json-contract {
             display: none;
         }
         .dynamic-list-item {
@@ -176,6 +176,76 @@
             z-index: 9999;
             font-family: Arial, sans-serif;
         }
+        
+        /* Drag and Drop Zone Styles */
+        .drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 15px 0;
+            background-color: #fafafa;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .drop-zone:hover {
+            border-color: #007bff;
+            background-color: #f0f8ff;
+        }
+        
+        .drop-zone.drag-over {
+            border-color: #007bff;
+            background-color: #e3f2fd;
+            transform: scale(1.02);
+        }
+        
+        .drop-zone.processing {
+            border-color: #ffc107;
+            background-color: #fff3cd;
+        }
+        
+        .drop-zone.success {
+            border-color: #28a745;
+            background-color: #d4edda;
+        }
+        
+        .drop-zone.error {
+            border-color: #dc3545;
+            background-color: #f8d7da;
+        }
+        
+        .drop-zone-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .drop-zone-text {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #495057;
+        }
+        
+        .drop-zone-subtext {
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        .file-preview {
+            margin-top: 15px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .file-preview.show {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -189,10 +259,22 @@
         <h1 data-lang="title">🖨️ Printer Leasing Contract Tool</h1>
 
         <fieldset>
-            <legend data-lang="templates">Contract Templates</legend>
-            <div class="button-group" style="margin-top: 0;">
+            <legend data-lang="templates">Contract Templates & Import</legend>
+            
+            <!-- Drag and Drop Zone -->
+            <div class="drop-zone" id="file-drop-zone">
+                <span class="drop-zone-icon">📁</span>
+                <div class="drop-zone-text" data-lang="dropZoneText">Drag & Drop Files Here</div>
+                <div class="drop-zone-subtext" data-lang="dropZoneSubtext">or click to browse (.json, .csv files)</div>
+                <div class="file-preview" id="file-preview"></div>
+            </div>
+            
+            <!-- Traditional File Input Buttons -->
+            <div class="button-group" style="margin-top: 15px;">
                 <input type="file" id="import-templates" accept=".csv">
                 <label for="import-templates" class="import-label" data-lang="importTemplatesBtn">📂 Import Templates (CSV)</label>
+                <input type="file" id="import-json-contract" accept=".json">
+                <label for="import-json-contract" class="import-label" data-lang="importJsonBtn">📄 Import Contract (JSON)</label>
                 <button type="button" id="download-template" data-lang="downloadTemplateBtn">📥 Download Template</button>
             </div>
         </fieldset>
@@ -306,8 +388,6 @@
 
             <div class="button-group">
                 <button id="save-btn" data-lang="saveBtn">💾 Save as JSON</button>
-                <input type="file" id="import-file" accept=".json">
-                <label for="import-file" class="import-label" data-lang="importBtn">📂 Import from JSON</label>
             </div>
         </div>
     </div>
@@ -664,6 +744,187 @@
                     }
                 });
             }
+
+            // Drag and Drop functionality
+            function setupDragAndDrop() {
+                const dropZone = document.getElementById('file-drop-zone');
+                const filePreview = document.getElementById('file-preview');
+                const csvInput = document.getElementById('import-templates');
+                const jsonInput = document.getElementById('import-json-contract');
+
+                if (!dropZone) return;
+
+                // Click to browse
+                dropZone.addEventListener('click', () => {
+                    // Create a temporary input to let user choose file type
+                    const tempInput = document.createElement('input');
+                    tempInput.type = 'file';
+                    tempInput.accept = '.json,.csv';
+                    tempInput.onchange = (e) => handleFileSelection(e.target.files);
+                    tempInput.click();
+                });
+
+                // Drag and drop events
+                dropZone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dropZone.classList.add('drag-over');
+                });
+
+                dropZone.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    if (!dropZone.contains(e.relatedTarget)) {
+                        dropZone.classList.remove('drag-over');
+                    }
+                });
+
+                dropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropZone.classList.remove('drag-over');
+                    handleFileSelection(e.dataTransfer.files);
+                });
+
+                function handleFileSelection(files) {
+                    if (files.length === 0) return;
+
+                    const file = files[0];
+                    const fileName = file.name.toLowerCase();
+                    
+                    // Show processing state
+                    dropZone.classList.add('processing');
+                    filePreview.innerHTML = `<strong>Processing:</strong> ${file.name} (${(file.size/1024).toFixed(1)} KB)";
+                    filePreview.classList.add('show');
+
+                    // Reset states
+                    dropZone.classList.remove('success', 'error');
+
+                    if (fileName.endsWith('.csv')) {
+                        // Handle CSV file
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            try {
+                                // Trigger the CSV import through the template manager
+                                const templateManager = PrinterApp.moduleRegistry?.getModule('TemplateManager');
+                                if (templateManager && templateManager.importTemplates) {
+                                    templateManager.importTemplates(e.target.result);
+                                    showDropZoneSuccess(`CSV imported successfully: ${file.name}`);
+                                } else {
+                                    // Fallback CSV handling
+                                    console.log('CSV content:', e.target.result);
+                                    showDropZoneSuccess(`CSV loaded: ${file.name} (fallback mode)`);
+                                }
+                            } catch (error) {
+                                console.error('CSV import error:', error);
+                                showDropZoneError(`Failed to import CSV: ${error.message}`);
+                            }
+                        };
+                        reader.onerror = () => showDropZoneError(`Failed to read CSV file: ${file.name}`);
+                        reader.readAsText(file);
+
+                    } else if (fileName.endsWith('.json')) {
+                        // Handle JSON file
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            try {
+                                const contractData = JSON.parse(e.target.result);
+                                
+                                // Populate form with contract data
+                                populateFormFromJSON(contractData);
+                                showDropZoneSuccess(`Contract imported successfully: ${file.name}`);
+                            } catch (error) {
+                                console.error('JSON import error:', error);
+                                showDropZoneError(`Failed to import JSON: ${error.message}`);
+                            }
+                        };
+                        reader.onerror = () => showDropZoneError(`Failed to read JSON file: ${file.name}`);
+                        reader.readAsText(file);
+
+                    } else {
+                        showDropZoneError(`Unsupported file type. Please use .json or .csv files.`);
+                    }
+                }
+
+                function populateFormFromJSON(data) {
+                    // Populate basic fields
+                    const fieldMappings = {
+                        'contract-name': 'contractName',
+                        'provider': 'provider',
+                        'duration': 'duration',
+                        'manufacturer': 'manufacturer',
+                        'model': 'model',
+                        'maintenance': 'maintenance',
+                        'reliability': 'reliability',
+                        'support': 'support',
+                        'easeOfUse': 'easeOfUse',
+                        'repairability': 'repairability',
+                        'base-cost': 'baseCost',
+                        'setup-fee': 'setupFee',
+                        'delivery-fee': 'deliveryFee',
+                        'mono-included': 'monoIncluded',
+                        'mono-overrun': 'monoOverrun',
+                        'color-included': 'colorIncluded',
+                        'color-overrun': 'colorOverrun'
+                    };
+
+                    Object.entries(fieldMappings).forEach(([fieldId, dataKey]) => {
+                        const element = document.getElementById(fieldId);
+                        if (element && data[dataKey] !== undefined) {
+                            element.value = data[dataKey];
+                        }
+                    });
+
+                    // Handle extra costs
+                    const extraCostsList = document.getElementById('extra-costs-list');
+                    if (extraCostsList && data.extraCosts) {
+                        extraCostsList.innerHTML = '';
+                        data.extraCosts.forEach(cost => {
+                            const item = createDynamicRow('extra-costs');
+                            item.querySelector('.extra-costs-desc').value = cost.description || '';
+                            item.querySelector('.extra-costs-amount').value = cost.amount || '';
+                            item.querySelector('.extra-costs-freq').value = cost.frequency || 'monthly';
+                        });
+                    }
+
+                    // Handle discounts
+                    const discountsList = document.getElementById('discounts-list');
+                    if (discountsList && data.discounts) {
+                        discountsList.innerHTML = '';
+                        data.discounts.forEach(discount => {
+                            const item = createDynamicRow('discounts');
+                            item.querySelector('.discounts-desc').value = discount.description || '';
+                            item.querySelector('.discounts-amount').value = discount.amount || '';
+                            item.querySelector('.discounts-freq').value = discount.frequency || 'monthly';
+                        });
+                    }
+
+                    console.log('Form populated from JSON data');
+                }
+
+                function showDropZoneSuccess(message) {
+                    dropZone.classList.remove('processing', 'error');
+                    dropZone.classList.add('success');
+                    filePreview.innerHTML = `<strong>✅ Success:</strong> ${message}`;
+                    setTimeout(() => {
+                        dropZone.classList.remove('success');
+                        filePreview.classList.remove('show');
+                    }, 3000);
+                }
+
+                function showDropZoneError(message) {
+                    dropZone.classList.remove('processing', 'success');
+                    dropZone.classList.add('error');
+                    filePreview.innerHTML = `<strong>❌ Error:</strong> ${message}`;
+                    setTimeout(() => {
+                        dropZone.classList.remove('error');
+                        filePreview.classList.remove('show');
+                    }, 5000);
+                }
+            }
+
+            // Setup drag and drop after DOM is ready
+            setTimeout(() => {
+                setupDragAndDrop();
+                console.log('Drag and drop functionality initialized');
+            }, 1500);
 
             // ...existing error handling code...
         } catch (error) {
