@@ -44,14 +44,20 @@ class FormManager {
     setupFileOperations() {
         try {
             const saveBtn = document.getElementById('save-btn');
-            const importInput = document.getElementById('import-file');
+            const importInput = document.getElementById('import-json-contract');
 
             if (saveBtn) {
                 saveBtn.addEventListener('click', () => this.saveContract());
+                AppLogger.debug('FormManager', 'Save button event listener attached');
+            } else {
+                AppLogger.warn('FormManager', 'Save button not found');
             }
 
             if (importInput) {
                 importInput.addEventListener('change', (e) => this.importContract(e));
+                AppLogger.debug('FormManager', 'Import input event listener attached');
+            } else {
+                AppLogger.warn('FormManager', 'Import input not found (this is normal if using drag-and-drop)');
             }
 
             AppLogger.debug('FormManager', 'File operation event listeners setup complete');
@@ -295,18 +301,20 @@ class FormManager {
 
     saveContract() {
         try {
-            AppLogger.info('FormManager', 'Saving contract');
+            AppLogger.info('FormManager', 'Saving contract - method called');
 
             const contractData = this.getFormData();
+            AppLogger.debug('FormManager', 'Contract data retrieved:', contractData);
             
             // Validate required fields
-            if (!contractData.name.trim()) {
+            if (!contractData.name || !contractData.name.trim()) {
                 throw new Error('Contract name is required');
             }
 
             const dataStr = JSON.stringify(contractData, null, 4);
             const filename = `${contractData.name.replace(/[^a-z0-9]/gi, '_') || 'contract'}.json`;
             
+            AppLogger.debug('FormManager', `Preparing to download file: ${filename}`);
             this.downloadFile(dataStr, filename, 'application/json');
             
             AppLogger.info('FormManager', `Contract saved as ${filename}`);

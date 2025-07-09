@@ -649,6 +649,100 @@
                     }
                     
                     console.log('Language switchers set up');
+                    
+                    // Set up save button fallback
+                    const saveBtn = document.getElementById('save-btn');
+                    if (saveBtn) {
+                        // Check if FormManager is working
+                        const formManager = PrinterApp.moduleRegistry?.getModule('FormManager');
+                        if (!formManager || !formManager.initialized) {
+                            console.log('FormManager not available, setting up fallback save functionality');
+                            saveBtn.addEventListener('click', () => {
+                                try {
+                                    console.log('Fallback save button clicked');
+                                    
+                                    // Get form data directly
+                                    const contractData = {
+                                        contractName: document.getElementById('contract-name')?.value || '',
+                                        provider: document.getElementById('provider')?.value || '',
+                                        duration: parseInt(document.getElementById('duration')?.value) || 0,
+                                        manufacturer: document.getElementById('manufacturer')?.value || '',
+                                        model: document.getElementById('model')?.value || '',
+                                        maintenance: parseInt(document.getElementById('maintenance')?.value) || 0,
+                                        reliability: parseInt(document.getElementById('reliability')?.value) || 0,
+                                        support: parseInt(document.getElementById('support')?.value) || 0,
+                                        easeOfUse: parseInt(document.getElementById('easeOfUse')?.value) || 0,
+                                        repairability: parseInt(document.getElementById('repairability')?.value) || 0,
+                                        baseCost: parseFloat(document.getElementById('base-cost')?.value) || 0,
+                                        setupFee: parseFloat(document.getElementById('setup-fee')?.value) || 0,
+                                        deliveryFee: parseFloat(document.getElementById('delivery-fee')?.value) || 0,
+                                        monoIncluded: parseInt(document.getElementById('mono-included')?.value) || 0,
+                                        monoOverrun: parseFloat(document.getElementById('mono-overrun')?.value) || 0,
+                                        colorIncluded: parseInt(document.getElementById('color-included')?.value) || 0,
+                                        colorOverrun: parseFloat(document.getElementById('color-overrun')?.value) || 0,
+                                        extraCosts: [],
+                                        discounts: [],
+                                        createdAt: new Date().toISOString()
+                                    };
+                                    
+                                    // Get dynamic lists data
+                                    const extraCostsList = document.getElementById('extra-costs-list');
+                                    if (extraCostsList) {
+                                        const extraCostItems = extraCostsList.querySelectorAll('.dynamic-list-item');
+                                        extraCostItems.forEach(item => {
+                                            const desc = item.querySelector('.extra-costs-desc')?.value || '';
+                                            const amount = parseFloat(item.querySelector('.extra-costs-amount')?.value) || 0;
+                                            const frequency = item.querySelector('.extra-costs-freq')?.value || 'monthly';
+                                            if (desc.trim()) {
+                                                contractData.extraCosts.push({ description: desc, amount: amount, frequency: frequency });
+                                            }
+                                        });
+                                    }
+                                    
+                                    const discountsList = document.getElementById('discounts-list');
+                                    if (discountsList) {
+                                        const discountItems = discountsList.querySelectorAll('.dynamic-list-item');
+                                        discountItems.forEach(item => {
+                                            const desc = item.querySelector('.discounts-desc')?.value || '';
+                                            const amount = parseFloat(item.querySelector('.discounts-amount')?.value) || 0;
+                                            const frequency = item.querySelector('.discounts-freq')?.value || 'monthly';
+                                            if (desc.trim()) {
+                                                contractData.discounts.push({ description: desc, amount: amount, frequency: frequency });
+                                            }
+                                        });
+                                    }
+                                    
+                                    // Validate and save
+                                    if (!contractData.contractName.trim()) {
+                                        alert('Contract name is required');
+                                        return;
+                                    }
+                                    
+                                    const dataStr = JSON.stringify(contractData, null, 2);
+                                    const filename = contractData.contractName.replace(/[^a-z0-9]/gi, '_') + '.json';
+                                    
+                                    // Create download
+                                    const blob = new Blob([dataStr], { type: 'application/json' });
+                                    const url = URL.createObjectURL(blob);
+                                    const a = document.createElement('a');
+                                    a.href = url;
+                                    a.download = filename;
+                                    a.style.visibility = 'hidden';
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    document.body.removeChild(a);
+                                    URL.revokeObjectURL(url);
+                                    
+                                    console.log('Contract saved successfully using fallback method');
+                                } catch (error) {
+                                    console.error('Fallback save failed:', error);
+                                    alert('Failed to save contract: ' + error.message);
+                                }
+                            });
+                        }
+                    }
+                    
+                    console.log('Save button fallback set up');
                     // Set up dynamic list buttons
                     const addExtraCostBtn = document.getElementById('add-extra-cost');
                     const addDiscountBtn = document.getElementById('add-discount');
